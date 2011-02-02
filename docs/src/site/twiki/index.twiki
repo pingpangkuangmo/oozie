@@ -15,7 +15,7 @@ execute Hadoop Map/Reduce and Pig jobs.
 
 ---++ Distribution Contents
 
-Oozie distribution consists of a single 'tar.gz' file containing:
+Oozie TAR distribution consists of a single 'tar.gz' file containing:
 
    * Readme, license, notice & [[./release-log.txt][Release log]] files.
    * Oozie server: =oozie-server= directory.
@@ -28,6 +28,10 @@ Oozie distribution consists of a single 'tar.gz' file containing:
       * =docs.zip=: Documentation.
       * =oozie-examples-*.tar.gz=: Examples.
       * =oozie-sharelib-*.tar.gz=: Share libraries (with Streaming, Pig JARs).
+
+NOTE: Oozie RPM and Debian consist of a client (oozie-client) and a server (oozie) packages. Their
+binaries are installed in =/usr/lib/oozie/=, configuration in =/etc/oozie= and examples and
+documentation in =/usr/share/doc/oozie/=.
 
 ---++ Quick Start
 

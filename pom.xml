@@ -156,6 +156,9 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+            <releases>
+              <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
             <id>datanucleus</id>

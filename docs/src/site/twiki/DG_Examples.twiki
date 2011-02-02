@@ -12,6 +12,9 @@
 
 Oozie examples are bundled within the Oozie distribution in the =oozie-examples.tar.gz= file.
 
+*NOTE:* For RPM & Debian installations, the examples TAR.GZ file is in the documentation directory
+(normally =/usr/share/doc/oozie=).
+
 Expanding this file will create an =examples/= directory in the local file system.
 
 The =examples/= directory must be copied to the user HOME directory in HDFS:
