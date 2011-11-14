@@ -55,11 +55,17 @@
         <test.exclude>_</test.exclude>
         <test.exclude.pattern>_</test.exclude.pattern>
 
-        <oozie.data.dir>${project.build.directory}/test-data</oozie.data.dir>
+        <oozie.test.dir>${project.build.directory}/test-data</oozie.test.dir>
 
         <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
         <hadoop.version>1.0.0</hadoop.version>
+
+        <oozie.data.dir>${oozie.test.dir}</oozie.data.dir>
+        <oozie.test.db.host>localhost</oozie.test.db.host>
+        <oozie.test.db>hsqldb</oozie.test.db>
+        <oozie.test.default.config.file>${basedir}/src/test/resources/${oozie.test.db}-oozie-site.xml</oozie.test.default.config.file>
+        <oozie.test.config.file>${oozie.test.default.config.file}</oozie.test.config.file>
     </properties>
 
     <modules>
@@ -416,7 +422,7 @@
             <dependency>
                 <groupId>com.oracle</groupId>
                 <artifactId>ojdbc6</artifactId>
-                <version>11.2.0.1.0</version>
+                <version>11.2.0.2.0</version>
             </dependency>
 
             <dependency>
@@ -591,7 +597,9 @@
                     <argLine>-Xmx1024m</argLine>
                     <systemPropertiesVariables>
                         <hadoop.log.dir>/tmp</hadoop.log.dir>
-                        <oozie.data.dir>${oozie.data.dir}</oozie.data.dir>
+                        <oozie.test.data.dir>${oozie.test.data.dir}</oozie.test.data.dir>
+                        <oozie.test.db.host>${oozie.test.db.host}</oozie.test.db.host>
+                        <oozie.test.config.file>${oozie.test.config.file}</oozie.test.config.file>
                     </systemPropertiesVariables>
                     <excludes>
                         <exclude>**/${test.exclude}.java</exclude>
@@ -637,5 +645,5 @@
             </properties>
         </profile>
     </profiles>
-    
+
 </project>

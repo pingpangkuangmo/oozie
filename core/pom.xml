@@ -456,7 +456,8 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
                 <property>
-                    <name>mysql</name>
+                    <name>oozie.test.db</name>
+                    <value>mysql</value>
                 </property>
             </activation>
             <dependencies>
@@ -476,7 +477,8 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
                 <property>
-                    <name>oracle</name>
+                    <name>oozie.test.db</name>
+                    <value>oracle</value>
                 </property>
             </activation>
             <dependencies>
