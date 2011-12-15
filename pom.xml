@@ -47,8 +47,6 @@
         <!-- to be able to run a single test case from the main project -->
         <failIfNoTests>false</failIfNoTests>
 
-        <internal.maven.repository>file:///tmp/internalmavenrepo</internal.maven.repository>
-
         <!-- platform encoding override -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -97,23 +95,7 @@
         <module>distro</module>
     </modules>
 
-    <distributionManagement>
-        <repository>
-            <id>internal.maven.repo</id>
-            <name>Internal Repository for Integration</name>
-            <url>${internal.maven.repository}</url>
-        </repository>
-    </distributionManagement>
-
     <repositories>
-        <repository>
-            <id>internal.maven.repo</id>
-            <name>Internal Repository for Integration</name>
-            <url>${internal.maven.repository}</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
 
         <repository>
             <id>cdh.repo</id>
@@ -123,7 +105,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-
         <repository>
             <id>cdh.snapshots.repo</id>
             <url>https://repository.cloudera.com/content/repositories/snapshots</url>
@@ -134,13 +115,6 @@
             <releases>
               <enabled>false</enabled>
             </releases>
-        </repository>
-        <repository>
-            <id>central</id>
-            <url>http://repo1.maven.org/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </repository>
         <repository>
             <id>Codehaus repository</id>
@@ -171,14 +145,6 @@
     </repositories>
 
     <pluginRepositories>
-        <pluginRepository>
-            <id>internal.maven.repo</id>
-            <name>Internal Repository for Integration</name>
-            <url>${internal.maven.repository}</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
         <pluginRepository>
             <id>yahoo.github</id>
             <url>http://yahoo.github.com/maven/repository</url>
