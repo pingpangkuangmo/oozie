@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License.  You may obtain a copy of the License at
-  
+
        http://www.apache.org/licenses/LICENSE-2.0
-  
+
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,58 +22,41 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.1.3-incubating</version>
+        <version>3.2.0-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.oozie</groupId>
-    <artifactId>oozie-sharelib</artifactId>
-    <version>3.1.3-incubating</version>
-    <description>Apache Oozie Share Lib</description>
-    <name>Apache Oozie Share Lib</name>
+    <artifactId>oozie-hadooplibs</artifactId>
+    <version>3.2.0-SNAPSHOT</version>
+    <description>Apache Oozie Hadoop Libs</description>
+    <name>Apache Oozie Hadoop Libs</name>
     <packaging>pom</packaging>
 
     <modules>
-        <module>streaming</module>
-        <module>pig</module>
-        <module>hive</module>
-        <module>sqoop</module>
-        <module>oozie</module>
+        <module>hadoop-1_0_0</module>
+        <module>hadoop-test-1_0_0</module>
+        <module>hadoop-0_23_1</module>
+        <module>hadoop-test-0_23_1</module>
+        <module>hadoop-0_24_0</module>
+        <module>hadoop-test-0_24_0</module>
     </modules>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>resources</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <descriptors>
-                        <descriptor>../src/main/assemblies/sharelib.xml</descriptor>
-                    </descriptors>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>../src/main/assemblies/hadooplibs.xml</descriptor>
+                    </descriptors>
+                    <finalName>oozie-${project.version}</finalName>
                 </configuration>
             </plugin>
         </plugins>
