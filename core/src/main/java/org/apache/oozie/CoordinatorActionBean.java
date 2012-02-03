@@ -81,6 +81,9 @@ import org.apache.openjpa.persistence.jdbc.Index;
 
         @NamedQuery(name = "GET_ACTIONS_FOR_COORD_JOB", query = "select OBJECT(a) from CoordinatorActionBean a where a.jobId = :jobId"),
 
+        // Query to retrieve Coordinator actions sorted by nominal time
+        @NamedQuery(name = "GET_ACTIONS_FOR_COORD_JOB_ORDER_BY_NOMINAL_TIME", query = "select OBJECT(a) from CoordinatorActionBean a where a.jobId = :jobId order by a.nominalTimestamp"),
+
         // Query to retrieve action id, action status, pending status and external Id of not completed Coordinator actions
         @NamedQuery(name = "GET_COORD_ACTIONS_NOT_COMPLETED", query = "select a.id, a.status, a.pending, a.externalId from CoordinatorActionBean a where a.jobId = :jobId AND a.status <> 'FAILED' AND a.status <> 'TIMEDOUT' AND a.status <> 'SUCCEEDED' AND a.status <> 'KILLED'"),
 
@@ -131,6 +134,7 @@ public class CoordinatorActionBean extends JsonCoordinatorAction implements
     private String status = null;
 
     @Basic
+    @Index
     @Column(name = "nominal_time")
     private java.sql.Timestamp nominalTimestamp = null;
 
