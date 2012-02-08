@@ -1495,4 +1495,13 @@
 		</description>
 	</property>
 
+	<!-- ForkJoin validation -->
+	<property>
+		<name>oozie.validate.ForkJoin</name>
+		<value>true</value>
+		<description>
+			If true, fork and join should be validated at wf submission time.
+		</description>
+	</property>
+
 </configuration>
