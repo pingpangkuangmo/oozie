@@ -801,6 +801,16 @@
                 <oozie.test.forkMode>always</oozie.test.forkMode>
             </properties>
         </profile>
+
+        <profile>
+            <id>mr1</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <hadoop.version>${cdh.mr1.version}</hadoop.version>
+            </properties>
+        </profile>
     </profiles>
 
 </project>
