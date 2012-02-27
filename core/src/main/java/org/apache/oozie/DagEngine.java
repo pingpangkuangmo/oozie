@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -86,7 +86,7 @@ public class DagEngine extends BaseEngine {
      */
     public DagEngine(String user, String authToken) {
         this();
-        
+
         this.user = ParamChecker.notEmpty(user, "user");
         this.authToken = ParamChecker.notEmpty(authToken, "authToken");
     }
@@ -102,7 +102,7 @@ public class DagEngine extends BaseEngine {
     @Override
     public String submitJob(Configuration conf, boolean startJob) throws DagEngineException {
         validateSubmitConfiguration(conf);
-        
+
         try {
             SubmitXCommand submit = new SubmitXCommand(conf, getAuthToken());
             String jobId = submit.call();
@@ -426,16 +426,16 @@ public class DagEngine extends BaseEngine {
     /**
      * Return the info about a set of jobs.
      *
-     * @param filterStr job filter. Refer to the {@link org.apache.oozie.client.OozieClient} for the filter syntax.
+     * @param filter job filter. Refer to the {@link org.apache.oozie.client.OozieClient} for the filter syntax.
      * @param start offset, base 1.
      * @param len number of jobs to return.
      * @return job info for all matching jobs, the jobs don't contain node action information.
      * @throws DagEngineException thrown if the jobs info could not be obtained.
      */
-    public WorkflowsInfo getJobs(String filterStr, int start, int len) throws DagEngineException {
-        Map<String, List<String>> filter = parseFilter(filterStr);
+    public WorkflowsInfo getJobs(String filter, int start, int len) throws DagEngineException {
+        Map<String, List<String>> filterList = parseFilter(filter);
         try {
-            return new JobsXCommand(filter, start, len).call();
+            return new JobsXCommand(filterList, start, len).call();
         }
         catch (CommandException dce) {
             throw new DagEngineException(dce);
@@ -465,7 +465,7 @@ public class DagEngine extends BaseEngine {
     }
 
     @Override
-    public CoordinatorJob getCoordJob(String jobId, int start, int length) throws BaseEngineException {
+    public CoordinatorJob getCoordJob(String jobId, String filter, int start, int length) throws BaseEngineException {
         throw new BaseEngineException(new XException(ErrorCode.E0301));
     }
 
