@@ -125,6 +125,7 @@ public class SignalCommand extends WorkflowCommand<Void> {
                         action.resetPending();
                         if (!skipAction) {
                             action.setTransition(workflowInstance.getTransition(action.getName()));
+                            queueCallable(new NotificationCommand(workflow, action));
                         }
                         store.updateAction(action);
                     }

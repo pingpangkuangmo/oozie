@@ -168,6 +168,7 @@ public class SignalXCommand extends WorkflowXCommand<Void> {
             wfAction.resetPending();
             if (!skipAction) {
                 wfAction.setTransition(workflowInstance.getTransition(wfAction.getName()));
+                queue(new NotificationXCommand(wfJob, wfAction));
             }
             try {
                 jpaService.execute(new WorkflowActionUpdateJPAExecutor(wfAction));
