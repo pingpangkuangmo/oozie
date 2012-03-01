@@ -47,6 +47,8 @@
         <!-- to be able to run a single test case from the main project -->
         <failIfNoTests>false</failIfNoTests>
 
+        <test.timeout>3600</test.timeout>
+
         <!-- platform encoding override -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -736,7 +738,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <forkMode>${oozie.test.forkMode}</forkMode>
-                    <forkedProcessTimeoutInSeconds>3600</forkedProcessTimeoutInSeconds>
+                    <forkedProcessTimeoutInSeconds>${test.timeout}</forkedProcessTimeoutInSeconds>
                     <argLine>-Xmx1024m -da -XX:MaxPermSize=512m</argLine>
                     <systemPropertyVariables>
                         <hadoop.log.dir>/tmp</hadoop.log.dir>
