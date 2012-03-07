@@ -227,7 +227,6 @@ public class CoordActionMaterializeCommand extends CoordinatorCommand<Void> {
      * @param actionBean
      * @param actionXml
      * @param store
-     * @param wantSla
      * @throws StoreException
      * @throws JDOMException
      */
@@ -238,8 +237,8 @@ public class CoordActionMaterializeCommand extends CoordinatorCommand<Void> {
         writeActionRegistration(actionXml, actionBean, store);
 
         // TODO: time 100s should be configurable
-        queueCallable(new CoordActionNotification(actionBean), 100);
-        queueCallable(new CoordActionInputCheckCommand(actionBean.getId()), 100);
+        queueCallable(new CoordActionNotificationXCommand(actionBean), 100);
+        queueCallable(new CoordActionInputCheckXCommand(actionBean.getId()), 100);
     }
 
     /**
