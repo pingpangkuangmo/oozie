@@ -173,8 +173,11 @@ public class JavaActionExecutor extends ActionExecutor {
         }
     }
 
-    public Configuration createBaseHadoopConf(Context context, Element actionXml) {
-        Configuration conf = new XConfiguration();
+    public JobConf createBaseHadoopConf(Context context, Element actionXml) {
+        Namespace ns = actionXml.getNamespace();
+        String jobTracker = actionXml.getChild("job-tracker", ns).getTextTrim();
+        String nameNode = actionXml.getChild("name-node", ns).getTextTrim();
+        JobConf conf = Services.get().get(HadoopAccessorService.class).createJobConf(jobTracker);
         conf.set(HADOOP_USER, context.getProtoActionConf().get(WorkflowAppService.HADOOP_USER));
         conf.set(HADOOP_UGI, context.getProtoActionConf().get(WorkflowAppService.HADOOP_UGI));
         if (context.getProtoActionConf().get(WorkflowAppService.HADOOP_JT_KERBEROS_NAME) != null) {
@@ -186,9 +189,6 @@ public class JavaActionExecutor extends ActionExecutor {
                     WorkflowAppService.HADOOP_NN_KERBEROS_NAME));
         }
         conf.set(OozieClient.GROUP_NAME, context.getProtoActionConf().get(OozieClient.GROUP_NAME));
-        Namespace ns = actionXml.getNamespace();
-        String jobTracker = actionXml.getChild("job-tracker", ns).getTextTrim();
-        String nameNode = actionXml.getChild("name-node", ns).getTextTrim();
         conf.set(HADOOP_JOB_TRACKER, jobTracker);
         conf.set(HADOOP_NAME_NODE, nameNode);
         conf.set("mapreduce.fileoutputcommitter.marksuccessfuljobs", "true");
@@ -219,7 +219,6 @@ public class JavaActionExecutor extends ActionExecutor {
                 checkForDisallowedProps(launcherConf, "inline launcher configuration");
                 XConfiguration.copy(launcherConf, conf);
             }
-            conf.set("mapreduce.framework.name", "yarn");
             return conf;
         }
         catch (IOException ex) {
@@ -266,7 +265,6 @@ public class JavaActionExecutor extends ActionExecutor {
                 checkForDisallowedProps(inlineConf, "inline configuration");
                 XConfiguration.copy(inlineConf, actionConf);
             }
-            actionConf.set("mapreduce.framework.name", "yarn");
             return actionConf;
         }
         catch (IOException ex) {
@@ -488,15 +486,9 @@ public class JavaActionExecutor extends ActionExecutor {
             }
 
             // launcher job configuration
-            Configuration launcherConf = createBaseHadoopConf(context, actionXml);
-            setupLauncherConf(launcherConf, actionXml, appPathRoot, context);
+            JobConf launcherJobConf = createBaseHadoopConf(context, actionXml);
+            setupLauncherConf(launcherJobConf, actionXml, appPathRoot, context);
 
-            // we are doing init+copy because if not we are getting 'hdfs'
-            // scheme not known
-            // its seems that new JobConf(Conf) does not load defaults, it
-            // assumes parameter Conf does.
-            JobConf launcherJobConf = new JobConf();
-            XConfiguration.copy(launcherConf, launcherJobConf);
             setLibFilesArchives(context, actionXml, appPathRoot, launcherJobConf);
             String jobName = XLog.format("oozie:launcher:T={0}:W={1}:A={2}:ID={3}", getType(), context.getWorkflow()
                     .getAppName(), action.getName(), context.getWorkflow().getId());
@@ -509,7 +501,7 @@ public class JavaActionExecutor extends ActionExecutor {
 
             LauncherMapper.setupLauncherInfo(launcherJobConf, jobId, actionId, actionDir, recoveryId, actionConf);
 
-            LauncherMapper.setupMainClass(launcherJobConf, getLauncherMain(launcherConf, actionXml));
+            LauncherMapper.setupMainClass(launcherJobConf, getLauncherMain(launcherJobConf, actionXml));
 
             LauncherMapper.setupMaxOutputData(launcherJobConf, maxActionOutputLen);
             LauncherMapper.setupMaxExternalStatsSize(launcherJobConf, maxExternalStatsSize);
@@ -524,7 +516,7 @@ public class JavaActionExecutor extends ActionExecutor {
 
             Element opt = actionXml.getChild("java-opts", ns);
             if (opt != null) {
-                String opts = launcherConf.get("mapred.child.java.opts", "");
+                String opts = launcherJobConf.get("mapred.child.java.opts", "");
                 opts = opts + " " + opt.getTextTrim();
                 opts = opts.trim();
                 launcherJobConf.set("mapred.child.java.opts", opts);
@@ -885,9 +877,7 @@ public class JavaActionExecutor extends ActionExecutor {
         try {
             Element actionXml = XmlUtils.parseXml(action.getConf());
             FileSystem actionFs = getActionFileSystem(context, actionXml);
-            Configuration conf = createBaseHadoopConf(context, actionXml);
-            JobConf jobConf = new JobConf();
-            XConfiguration.copy(conf, jobConf);
+            JobConf jobConf = createBaseHadoopConf(context, actionXml);
             jobClient = createJobClient(context, jobConf);
             RunningJob runningJob = jobClient.getJob(JobID.forName(action.getExternalId()));
             if (runningJob == null) {
@@ -1036,9 +1026,7 @@ public class JavaActionExecutor extends ActionExecutor {
         boolean exception = false;
         try {
             Element actionXml = XmlUtils.parseXml(action.getConf());
-            Configuration conf = createBaseHadoopConf(context, actionXml);
-            JobConf jobConf = new JobConf();
-            XConfiguration.copy(conf, jobConf);
+            JobConf jobConf = createBaseHadoopConf(context, actionXml);
             jobClient = createJobClient(context, jobConf);
             RunningJob runningJob = jobClient.getJob(JobID.forName(action.getExternalId()));
             if (runningJob != null) {

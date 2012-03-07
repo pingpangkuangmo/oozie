@@ -24,12 +24,14 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.RunningJob;
+import org.apache.oozie.service.HadoopAccessorService;
 import org.apache.oozie.test.XFsTestCase;
 import org.apache.oozie.util.IOUtils;
 import org.apache.oozie.util.XConfiguration;
 import org.apache.oozie.service.Services;
 
 import java.io.File;
+import java.net.URI;
 
 public class TestLauncher extends XFsTestCase {
 
@@ -57,7 +59,8 @@ public class TestLauncher extends XFsTestCase {
         Path launcherJar = new Path(actionDir, "launcher.jar");
         fs.copyFromLocalFile(new Path(jar.toString()), launcherJar);
 
-        JobConf jobConf = new JobConf();
+        JobConf jobConf = Services.get().get(HadoopAccessorService.class).
+            createJobConf(new URI(getNameNodeUri()).getAuthority());
 //        jobConf.setJar(jar.getAbsolutePath());
         jobConf.set("user.name", getTestUser());
         jobConf.set("group.name", getTestGroup());
