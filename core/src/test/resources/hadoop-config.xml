@@ -21,12 +21,12 @@
 
     <property>
         <name>mapreduce.jobtracker.kerberos.principal</name>
-        <value>map/_HOST@${localRealm}</value>
+        <value>mapred/_HOST@LOCALREALM</value>
     </property>
 
     <property>
         <name>dfs.namenode.kerberos.principal</name>
-        <value>hdfs/_HOST@${localRealm}</value>
+        <value>hdfs/_HOST@LOCALREALM</value>
     </property>
 
     <property>
