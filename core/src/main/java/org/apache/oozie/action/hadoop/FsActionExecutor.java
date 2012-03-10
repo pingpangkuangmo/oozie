@@ -139,7 +139,7 @@ public class FsActionExecutor extends ActionExecutor {
         HadoopAccessorService has = Services.get().get(HadoopAccessorService.class);
         JobConf conf = has.createJobConf(path.toUri().getAuthority());
         XConfiguration.copy(context.getProtoActionConf(), conf);
-        return has.createFileSystem(user, group, path.toUri(), conf);
+        return has.createFileSystem(user, path.toUri(), conf);
     }
 
     /**
@@ -151,7 +151,7 @@ public class FsActionExecutor extends ActionExecutor {
      */
     private FileSystem getFileSystemFor(Path path, String user, String group) throws HadoopAccessorException {
         JobConf jobConf = Services.get().get(HadoopAccessorService.class).createJobConf(path.toUri().getAuthority());
-        return Services.get().get(HadoopAccessorService.class).createFileSystem(user, group, path.toUri(), jobConf);
+        return Services.get().get(HadoopAccessorService.class).createFileSystem(user, path.toUri(), jobConf);
     }
 
     void mkdir(Context context, Path path) throws ActionExecutorException {

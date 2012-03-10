@@ -28,7 +28,6 @@ import org.apache.hadoop.streaming.StreamJob;
 import org.apache.oozie.WorkflowActionBean;
 import org.apache.oozie.WorkflowJobBean;
 import org.apache.oozie.client.WorkflowAction;
-import org.apache.oozie.client.OozieClient;
 import org.apache.oozie.service.WorkflowAppService;
 import org.apache.oozie.service.Services;
 import org.apache.oozie.service.HadoopAccessorService;
@@ -217,7 +216,7 @@ public class TestMapReduceActionExecutor extends ActionExecutorTestCase {
         XConfiguration.copy(conf, jobConf);
         String user = jobConf.get("user.name");
         String group = jobConf.get("group.name");
-        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, group, jobConf);
+        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, jobConf);
         final RunningJob runningJob = jobClient.getJob(JobID.forName(jobId));
         assertNotNull(runningJob);
         return runningJob;
@@ -244,7 +243,7 @@ public class TestMapReduceActionExecutor extends ActionExecutorTestCase {
         JobConf conf = ae.createBaseHadoopConf(context, XmlUtils.parseXml(actionXml));
         String user = conf.get("user.name");
         String group = conf.get("group.name");
-        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, group, conf);
+        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, conf);
         final RunningJob mrJob = jobClient.getJob(JobID.forName(context.getAction().getExternalId()));
 
         waitFor(120 * 1000, new Predicate() {
@@ -291,7 +290,7 @@ public class TestMapReduceActionExecutor extends ActionExecutorTestCase {
         JobConf conf = ae.createBaseHadoopConf(context, XmlUtils.parseXml(actionXml));
         String user = conf.get("user.name");
         String group = conf.get("group.name");
-        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, group, conf);
+        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, conf);
         final RunningJob mrJob = jobClient.getJob(JobID.forName(context.getAction().getExternalId()));
 
         waitFor(120 * 1000, new Predicate() {
@@ -485,7 +484,7 @@ public class TestMapReduceActionExecutor extends ActionExecutorTestCase {
         JobConf conf = ae.createBaseHadoopConf(context, XmlUtils.parseXml(actionXml));
         String user = conf.get("user.name");
         String group = conf.get("group.name");
-        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, group, conf);
+        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, conf);
         final RunningJob mrJob = jobClient.getJob(JobID.forName(context.getAction().getExternalId()));
 
         waitFor(120 * 1000, new Predicate() {
@@ -560,7 +559,7 @@ public class TestMapReduceActionExecutor extends ActionExecutorTestCase {
         JobConf conf = ae.createBaseHadoopConf(context, XmlUtils.parseXml(actionXml));
         String user = conf.get("user.name");
         String group = conf.get("group.name");
-        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, group, conf);
+        JobClient jobClient = Services.get().get(HadoopAccessorService.class).createJobClient(user, conf);
         final RunningJob mrJob = jobClient.getJob(JobID.forName(context.getAction().getExternalId()));
 
         waitFor(120 * 1000, new Predicate() {
