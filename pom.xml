@@ -404,7 +404,7 @@
             <dependency>
                 <groupId>org.apache.hive</groupId>
                 <artifactId>hive-contrib</artifactId>
-                <version>${hive.version}</version>
+                <version>0.9.0-SNAPSHOT</version>
                 <exclusions>
                     <exclusion>
                         <groupId>hadoop</groupId>

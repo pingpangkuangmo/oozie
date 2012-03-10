@@ -104,15 +104,6 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         }
 
         conf = new XConfiguration();
-        conf.set("hadoop.job.ugi", "a");
-        try {
-            ae.checkForDisallowedProps(conf, "x");
-            fail();
-        }
-        catch (ActionExecutorException ex) {
-        }
-
-        conf = new XConfiguration();
         conf.set("mapred.job.tracker", "a");
         try {
             ae.checkForDisallowedProps(conf, "x");
@@ -169,9 +160,8 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         XConfiguration protoConf = new XConfiguration();
         protoConf.set(WorkflowAppService.HADOOP_USER, getTestUser());
-        protoConf.set(WorkflowAppService.HADOOP_UGI, getTestUser() + "," + getTestGroup());
         protoConf.setStrings(WorkflowAppService.APP_LIB_PATH_LIST, appJarPath.toString(), appSoPath.toString());
-        injectKerberosInfo(protoConf);
+
 
         WorkflowJobBean wf = createBaseWorkflow(protoConf, "action");
         WorkflowActionBean action = (WorkflowActionBean) wf.getActions().get(0);
@@ -188,7 +178,6 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         conf = ae.createBaseHadoopConf(context, actionXml);
         assertEquals(protoConf.get(WorkflowAppService.HADOOP_USER), conf.get(WorkflowAppService.HADOOP_USER));
-        assertEquals(protoConf.get(WorkflowAppService.HADOOP_UGI), conf.get(WorkflowAppService.HADOOP_UGI));
         assertEquals(getJobTrackerUri(), conf.get("mapred.job.tracker"));
         assertEquals(getNameNodeUri(), conf.get("fs.default.name"));
 
@@ -304,9 +293,8 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         XConfiguration protoConf = new XConfiguration();
         protoConf.set(WorkflowAppService.HADOOP_USER, getTestUser());
-        protoConf.set(WorkflowAppService.HADOOP_UGI, getTestUser() + "," + getTestGroup());
         protoConf.setStrings(WorkflowAppService.APP_LIB_PATH_LIST, appJarPath.toString(), appSoPath.toString());
-        injectKerberosInfo(protoConf);
+
 
         WorkflowJobBean wf = createBaseWorkflow(protoConf, "action");
         WorkflowActionBean action = (WorkflowActionBean) wf.getActions().get(0);
@@ -333,7 +321,7 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         JobConf jobConf = Services.get().get(HadoopAccessorService.class).createJobConf(jobTracker);
         jobConf.set("mapred.job.tracker", jobTracker);
-        injectKerberosInfo(jobConf);
+
         JobClient jobClient =
             Services.get().get(HadoopAccessorService.class).createJobClient(getTestUser(), jobConf);
         final RunningJob runningJob = jobClient.getJob(JobID.forName(jobId));
@@ -769,7 +757,7 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         conf.set(OozieClient.APP_PATH, getNameNodeUri() + "/testPath");
         conf.set(OozieClient.LOG_TOKEN, "testToken");
         conf.set(OozieClient.USER_NAME, getTestUser());
-        injectKerberosInfo(conf);
+
         WorkflowJobBean wfBean = createWorkflow(app, conf, "auth");
         wfBean.setId(wfId);
         wfBean.setStatus(WorkflowJob.Status.SUCCEEDED);
