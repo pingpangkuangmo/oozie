@@ -755,6 +755,7 @@
                     </systemPropertyVariables>
                     <environmentVariables>
                         <HADOOP_HOME>dummy</HADOOP_HOME>
+                        <MALLOC_ARENA_MAX>4</MALLOC_ARENA_MAX>
                     </environmentVariables>
                     <excludes>
                         <exclude>**/${test.exclude}.java</exclude>
