@@ -68,8 +68,6 @@
         </oozie.test.default.config.file>
         <oozie.test.config.file>${oozie.test.default.config.file}</oozie.test.config.file>
 
-        <sharelib.use.transitive.dependencies>true</sharelib.use.transitive.dependencies>
-
         <hadoop.version>${cdh.hadoop.version}</hadoop.version>
 
         <!--
