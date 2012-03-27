@@ -98,7 +98,7 @@
             <includes>
                 <include>*.sh</include>
             </includes>
-            <fileMode>0555</fileMode>
+            <fileMode>0755</fileMode>
         </fileSet>
     </fileSets>
     <files>
@@ -145,7 +145,11 @@
         <file>
             <source>${basedir}/../sharelib/target/oozie-sharelib-${project.version}.tar.gz</source>
             <outputDirectory>/</outputDirectory>
-            <fileMode>0444</fileMode>
+        </file>
+        <!-- Oozie hadooplibs TAR.GZ  -->
+        <file>
+            <source>${basedir}/../hadooplibs/target/oozie-hadooplibs-${project.version}.tar.gz</source>
+            <outputDirectory>/</outputDirectory>
         </file>
     </files>
 </assembly>
