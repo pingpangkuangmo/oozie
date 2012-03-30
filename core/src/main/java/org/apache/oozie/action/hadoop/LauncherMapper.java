@@ -130,8 +130,7 @@ public class LauncherMapper<K1, V1, K2, V2> implements Mapper<K1, V1, K2, V2>, R
         Path recoveryFile = new Path(actionDir, recoveryId);
         //FileSystem fs = FileSystem.get(launcherConf);
         FileSystem fs = Services.get().get(HadoopAccessorService.class)
-                .createFileSystem(launcherConf.get("user.name"),
-                                  launcherConf);
+                .createFileSystem(launcherConf.get("user.name"),recoveryFile.toUri(), launcherConf);
 
         if (fs.exists(recoveryFile)) {
             InputStream is = fs.open(recoveryFile);
@@ -194,8 +193,9 @@ public class LauncherMapper<K1, V1, K2, V2> implements Mapper<K1, V1, K2, V2>, R
         actionConf.set(OOZIE_JOB_ID, jobId);
         actionConf.set(OOZIE_ACTION_ID, actionId);
 
-        FileSystem fs = Services.get().get(HadoopAccessorService.class).createFileSystem(launcherConf.get("user.name"),
-                                                                                         launcherConf);
+        FileSystem fs =
+          Services.get().get(HadoopAccessorService.class).createFileSystem(launcherConf.get("user.name"),
+                                                                           actionDir.toUri(), launcherConf);
         fs.mkdirs(actionDir);
 
         OutputStream os = fs.create(new Path(actionDir, ACTION_CONF_XML));
