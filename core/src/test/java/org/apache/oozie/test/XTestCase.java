@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
@@ -275,6 +276,13 @@ public abstract class XTestCase extends TestCase {
            System.setProperty("oozie.test.db.host", "localhost");
         }
         setSystemProperty(ConfigurationService.OOZIE_DATA_DIR, testCaseDir);
+
+        if (mrCluster != null) {
+            OutputStream os = new FileOutputStream(new File(hadoopConfDir, "core-site.xml"));
+            Configuration conf = mrCluster.createJobConf();
+            conf.writeXml(os);
+            os.close();
+        }
     }
 
     /**
