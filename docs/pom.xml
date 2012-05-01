@@ -31,16 +31,17 @@
         <failIfNoTests>false</failIfNoTests>
   </properties>
 
-  <pluginRepositories>
-      <pluginRepository>
-          <id>yahoo.github</id>
-          <url>http://yahoo.github.com/maven/repository</url>
-          <snapshots>
-              <enabled>true</enabled>
-          </snapshots>
-      </pluginRepository>
-  </pluginRepositories>
-  
+     <pluginRepositories>
+        <pluginRepository>
+            <id>repository.cloudera.com</id>
+            <name>repository.cloudera.com-releases</name>
+            <url>https://repository.cloudera.com/artifactory/ext-release-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+ 
     <dependencies>
         <dependency>
             <groupId>org.apache.oozie</groupId>

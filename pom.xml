@@ -145,16 +145,6 @@
 
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>yahoo.github</id>
-            <url>http://yahoo.github.com/maven/repository</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
