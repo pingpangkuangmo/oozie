@@ -30,6 +30,9 @@
             <useTransitiveDependencies>true</useTransitiveDependencies>
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <scope>runtime</scope>
+            <excludes>
+                <exclude>*:*:*:tests</exclude>
+            </excludes>
         </dependencySet>
     </dependencySets>
 
