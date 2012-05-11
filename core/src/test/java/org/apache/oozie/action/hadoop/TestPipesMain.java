@@ -56,6 +56,7 @@ public class TestPipesMain extends MainTestCase {
 
 
             XConfiguration jobConf = new XConfiguration();
+            XConfiguration.copy(createJobConf(), jobConf);
 
             jobConf.set("user.name", getTestUser());
 
