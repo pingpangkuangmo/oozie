@@ -1006,7 +1006,7 @@ public abstract class XDataTestCase extends XFsTestCase {
         conf.set(OozieClient.USER_NAME, getTestUser());
         conf.set("jobTracker", getJobTrackerUri());
         conf.set("nameNode", getNameNodeUri());
-
+        conf.set("appName", "bundle-app-name");
 
         BundleJobBean bundle = new BundleJobBean();
         bundle.setId(Services.get().get(UUIDService.class).generateId(ApplicationType.BUNDLE));
