@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License.  You may obtain a copy of the License at
-
+  
        http://www.apache.org/licenses/LICENSE-2.0
-
+  
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.2.0-incubating</version>
+        <version>3.1.3-cdh4.1.0-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-core</artifactId>
-    <version>3.2.0-incubating</version>
+    <version>3.1.3-cdh4.1.0-SNAPSHOT</version>
     <description>Apache Oozie Core</description>
     <name>Apache Oozie Core</name>
     <packaging>jar</packaging>
@@ -49,12 +49,6 @@
             <groupId>org.apache.oozie</groupId>
             <artifactId>oozie-client</artifactId>
             <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-auth</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -117,23 +111,17 @@
         </dependency>
 
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>apache-log4j-extras</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>commons-el</groupId>
             <artifactId>commons-el</artifactId>
             <scope>compile</scope>
         </dependency>
-
+        
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
             <scope>compile</scope>
         </dependency>
-
+        
 
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -250,12 +238,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-auth</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -266,17 +248,6 @@
         </testResources>
         <plugins>
             <plugin>
-                 <groupId>org.apache.rat</groupId>
-                 <artifactId>apache-rat-plugin</artifactId>
-                 <configuration>
-                     <excludeSubProjects>false</excludeSubProjects>
-                     <excludes>
-                         <!-- excluding all as the root POM does the full check-->
-                         <exclude>**</exclude>
-                     </excludes>
-                 </configuration>
-             </plugin>
-             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
@@ -355,6 +326,18 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>src/test/resources/PigMain.txt</exclude>
+                        <exclude>src/test/resources/test-ioutils.txt</exclude>
+                        <exclude>.gitignore</exclude>
+                        <exclude>./SecurityAuth.audit</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -547,38 +530,10 @@
                 <dependency>
                     <groupId>org.antlr</groupId>
                     <artifactId>antlr-runtime</artifactId>
-                    <version>3.0.1</version>
+                   <version>3.0.1</version>
                     <scope>test</scope>
                 </dependency>
             </dependencies>
-        </profile>
-
-        <!-- Forcing Hadoop 0.20.2-cdh3u2 version because Sqoop    -->
-        <!-- uses Hadoop API that is avail 0.21 onwards and the    -->
-        <!-- Hadoop CDH version is the only stable version that    -->
-        <!-- currently has such API (SQOOP-384) and published      -->
-        <!-- in public Maven repos. This is a temporary fix        -->
-        <profile>
-            <id>testSqoop</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-                <property>
-                    <name>testSqoop</name>
-                </property>
-            </activation>
-            <properties>
-                <hadoop.version>0.20.2-cdh3u2</hadoop.version>
-            </properties>
-            <repositories>
-                <repository>
-                    <id>cdh.releases.repo</id>
-                    <url>https://repository.cloudera.com/content/groups/cdh-releases-rcs</url>
-                    <name>CDH Releases Repository</name>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </repository>
-            </repositories>
         </profile>
     </profiles>
 

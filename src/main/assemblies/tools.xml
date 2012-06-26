@@ -39,7 +39,6 @@
             <useProjectArtifact>true</useProjectArtifact>
             <outputDirectory>oozie-tools-${project.version}/libtools</outputDirectory>
             <unpack>false</unpack>
-            <scope>compile</scope>
             <excludes>
                  <exclude>*:*:pom:*</exclude>
             </excludes>

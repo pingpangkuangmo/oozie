@@ -31,6 +31,8 @@
             <useTransitiveFiltering>${sharelib.transitive.filtering}</useTransitiveFiltering>
             <scope>runtime</scope>
             <excludes>
+                <exclude>*:*:pom</exclude>
+                <exclude>*:*:*:tests</exclude>
                 <exclude>org.apache.oozie:oozie-hadoop-distcp:jar</exclude>
             </excludes>
         </dependencySet>

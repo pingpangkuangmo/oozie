@@ -26,11 +26,11 @@
     <fileSets>
         <!-- Hadoop libs -->
         <fileSet>
-            <directory>${basedir}/../hadooplibs/hadoop-1/target/hadooplibs</directory>
+            <directory>${basedir}/../hadooplibs/hadoop-cdh4mr1/target/hadooplibs</directory>
             <outputDirectory>/hadooplibs</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${basedir}/../hadooplibs/hadoop-2/target/hadooplibs</directory>
+            <directory>${basedir}/../hadooplibs/hadoop-cdh4mr2/target/hadooplibs</directory>
             <outputDirectory>/hadooplibs</outputDirectory>
         </fileSet>
     </fileSets>
