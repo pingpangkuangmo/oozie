@@ -22,12 +22,12 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.1.3-cdh4.0.0</version>
+        <version>3.1.3-cdh4.0.1</version>
         <relativePath>../..</relativePath>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-sharelib-pig</artifactId>
-    <version>3.1.3-cdh4.0.0</version>
+    <version>3.1.3-cdh4.0.1</version>
     <description>Apache Oozie Share Lib Pig</description>
     <name>Apache Oozie Share Lib Pig</name>
     <packaging>jar</packaging>
