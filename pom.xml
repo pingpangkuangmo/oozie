@@ -70,7 +70,7 @@
 
         <hadoop.version>${cdh.hadoop.version}</hadoop.version>
 
-        <hadooplib.version>${cdh.hadoop.version}.oozie-${project.version}</hadooplib.version>
+        <hadooplib.version>${hadoop.version}.oozie-${project.version}</hadooplib.version>
 
         <!--
         This is required while we support a a pre 0.23 version of Hadoop which does not have
