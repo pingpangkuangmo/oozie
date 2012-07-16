@@ -109,6 +109,12 @@
             <artifactId>log4j</artifactId>
             <scope>compile</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>apache-log4j-extras</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>commons-el</groupId>
