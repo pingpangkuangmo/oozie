@@ -869,6 +869,59 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         assertEquals("java-action-conf", ae.getShareLibName(context, new Element("java"), actionConf));
     }
 
+    public void testJavaOpts() throws Exception {
+        String actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
+                + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
+                + "<configuration>" + "<property><name>oozie.launcher.a</name><value>LA</value></property>"
+                + "<property><name>a</name><value>AA</value></property>"
+                + "<property><name>b</name><value>BB</value></property>" + "</configuration>"
+                + "<main-class>MAIN-CLASS</main-class>" + "<java-opts>JAVA-OPT1 JAVA-OPT2</java-opts>"
+                + "<arg>A1</arg>" + "<arg>A2</arg>" + "<file>f.jar</file>" + "<archive>a.tar</archive>" + "</java>";
+
+        JavaActionExecutor ae = new JavaActionExecutor();
+
+        WorkflowJobBean wfBean = addRecordToWfJobTable("test1", actionXml);
+        WorkflowActionBean action = (WorkflowActionBean) wfBean.getActions().get(0);
+        action.setType(ae.getType());
+        action.setConf(actionXml);
+
+        Context context = new Context(wfBean, action);
+
+        Element actionXmlconf = XmlUtils.parseXml(action.getConf());
+
+        Configuration actionConf = ae.createBaseHadoopConf(context, actionXmlconf);
+
+        Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
+
+        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT1"));
+        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT2"));
+
+        actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
+                + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
+                + "<configuration>" + "<property><name>oozie.launcher.a</name><value>LA</value></property>"
+                + "<property><name>a</name><value>AA</value></property>"
+                + "<property><name>b</name><value>BB</value></property>" + "</configuration>"
+                + "<main-class>MAIN-CLASS</main-class>" + "<java-opt>JAVA-OPT1</java-opt>"
+                + "<java-opt>JAVA-OPT2</java-opt>" + "<arg>A1</arg>" + "<arg>A2</arg>" + "<file>f.jar</file>"
+                + "<archive>a.tar</archive>" + "</java>";
+
+        wfBean = addRecordToWfJobTable("test1", actionXml);
+        action = (WorkflowActionBean) wfBean.getActions().get(0);
+        action.setType(ae.getType());
+        action.setConf(actionXml);
+
+        context = new Context(wfBean, action);
+
+        actionXmlconf = XmlUtils.parseXml(action.getConf());
+
+        actionConf = ae.createBaseHadoopConf(context, actionXmlconf);
+
+        conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
+
+        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT1"));
+        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT2"));
+    }
+
     public void testActionLibsPath() throws Exception {
         // Test adding a directory
         Path actionLibPath = new Path(getFsTestCaseDir(), "actionlibs");
@@ -945,56 +998,81 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         assertTrue(cacheFilesStr.contains(jar3Path.toString()));
     }
 
-    public void testJavaOpts() throws Exception {
-        String actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
-                + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
-                + "<configuration>" + "<property><name>oozie.launcher.a</name><value>LA</value></property>"
-                + "<property><name>a</name><value>AA</value></property>"
-                + "<property><name>b</name><value>BB</value></property>" + "</configuration>"
-                + "<main-class>MAIN-CLASS</main-class>" + "<java-opts>JAVA-OPT1 JAVA-OPT2</java-opts>"
-                + "<arg>A1</arg>" + "<arg>A2</arg>" + "<file>f.jar</file>" + "<archive>a.tar</archive>" + "</java>";
+    public void testACLDefaults_launcherACLsSetToDefault() throws Exception {
+        // CASE: launcher specific ACLs not configured - set defaults
+        String actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" +
+                "<name-node>" + getNameNodeUri() + "</name-node> <configuration>" +
+                "<property><name>mapreduce.job.acl-view-job</name><value>VIEWER</value></property>" +
+                "<property><name>mapreduce.job.acl-modify-job</name><value>MODIFIER</value></property>" +
+                "</configuration>" + "<main-class>MAIN-CLASS</main-class>" +
+                "</java>";
 
-        JavaActionExecutor ae = new JavaActionExecutor();
-
-        WorkflowJobBean wfBean = addRecordToWfJobTable("test1", actionXml);
+        WorkflowJobBean wfBean = addRecordToWfJobTable("test1-acl", actionXml);
         WorkflowActionBean action = (WorkflowActionBean) wfBean.getActions().get(0);
+        JavaActionExecutor ae = new JavaActionExecutor();
         action.setType(ae.getType());
-        action.setConf(actionXml);
-
         Context context = new Context(wfBean, action);
 
-        Element actionXmlconf = XmlUtils.parseXml(action.getConf());
+        Element eActionXml = XmlUtils.parseXml(actionXml);
 
-        Configuration actionConf = ae.createBaseHadoopConf(context, actionXmlconf);
+        Configuration actionConf = ae.createBaseHadoopConf(context, eActionXml);
+        ae.setupActionConf(actionConf, context, eActionXml, getAppPath());
+        Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, eActionXml, actionConf);
 
-        Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
-
-        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT1"));
-        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT2"));
-
-        actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
-                + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
-                + "<configuration>" + "<property><name>oozie.launcher.a</name><value>LA</value></property>"
-                + "<property><name>a</name><value>AA</value></property>"
-                + "<property><name>b</name><value>BB</value></property>" + "</configuration>"
-                + "<main-class>MAIN-CLASS</main-class>" + "<java-opt>JAVA-OPT1</java-opt>"
-                + "<java-opt>JAVA-OPT2</java-opt>" + "<arg>A1</arg>" + "<arg>A2</arg>" + "<file>f.jar</file>"
-                + "<archive>a.tar</archive>" + "</java>";
-
-        wfBean = addRecordToWfJobTable("test1", actionXml);
-        action = (WorkflowActionBean) wfBean.getActions().get(0);
-        action.setType(ae.getType());
-        action.setConf(actionXml);
-
-        context = new Context(wfBean, action);
-
-        actionXmlconf = XmlUtils.parseXml(action.getConf());
-
-        actionConf = ae.createBaseHadoopConf(context, actionXmlconf);
-
-        conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
-
-        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT1"));
-        assertTrue(conf.get("mapred.child.java.opts").contains("JAVA-OPT2"));
+        assertEquals("VIEWER", conf.get(JavaActionExecutor.ACL_VIEW_JOB));
+        assertEquals("MODIFIER", conf.get(JavaActionExecutor.ACL_MODIFY_JOB));
     }
+
+    public void testACLDefaults_noFalseChange() throws Exception {
+        // CASE: launcher specific ACLs configured, but MR job ACLs not configured i.e. null. Check for no false changes to null
+        String actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" +
+                "<name-node>" + getNameNodeUri() + "</name-node> <configuration>" +
+                "<property><name>oozie.launcher.mapreduce.job.acl-view-job</name><value>V</value></property>" +
+                "<property><name>oozie.launcher.mapreduce.job.acl-modify-job</name><value>M</value></property>" +
+                "</configuration>" + "<main-class>MAIN-CLASS</main-class>" +
+                "</java>";
+
+        WorkflowJobBean wfBean = addRecordToWfJobTable("test2-acl", actionXml);
+        WorkflowActionBean action = (WorkflowActionBean) wfBean.getActions().get(0);
+        JavaActionExecutor ae = new JavaActionExecutor();
+        action.setType(ae.getType());
+        Context context = new Context(wfBean, action);
+
+        Element eActionXml = XmlUtils.parseXml(actionXml);
+
+        Configuration actionConf = ae.createBaseHadoopConf(context, eActionXml);
+        ae.setupActionConf(actionConf, context, eActionXml, getAppPath());
+        Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, eActionXml, actionConf);
+
+        assertNotNull(conf.get(JavaActionExecutor.ACL_VIEW_JOB));
+        assertNotNull(conf.get(JavaActionExecutor.ACL_MODIFY_JOB));
+    }
+
+    public void testACLDefaults_explicitLauncherAndActionSettings() throws Exception {
+        // CASE: launcher specific ACLs configured, as well as MR job ACLs configured. Check that NO overriding with defaults
+        String actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" +
+                "<name-node>" + getNameNodeUri() + "</name-node> <configuration>" +
+                "<property><name>oozie.launcher.mapreduce.job.acl-view-job</name><value>V</value></property>" +
+                "<property><name>oozie.launcher.mapreduce.job.acl-modify-job</name><value>M</value></property>" +
+                "<property><name>mapreduce.job.acl-view-job</name><value>VIEWER</value></property>" +
+                "<property><name>mapreduce.job.acl-modify-job</name><value>MODIFIER</value></property>" +
+                "</configuration>" + "<main-class>MAIN-CLASS</main-class>" +
+                "</java>";
+
+        WorkflowJobBean wfBean = addRecordToWfJobTable("test3-acl", actionXml);
+        WorkflowActionBean action = (WorkflowActionBean) wfBean.getActions().get(0);
+        JavaActionExecutor ae = new JavaActionExecutor();
+        action.setType(ae.getType());
+        Context context = new Context(wfBean, action);
+
+        Element eActionXml = XmlUtils.parseXml(actionXml);
+
+        Configuration actionConf = ae.createBaseHadoopConf(context, eActionXml);
+        ae.setupActionConf(actionConf, context, eActionXml, getAppPath());
+        Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, eActionXml, actionConf);
+
+        assertNotSame(conf.get(JavaActionExecutor.ACL_VIEW_JOB), actionConf.get(JavaActionExecutor.ACL_VIEW_JOB));
+        assertNotSame(conf.get(JavaActionExecutor.ACL_MODIFY_JOB), actionConf.get(JavaActionExecutor.ACL_MODIFY_JOB));
+    }
+
 }
