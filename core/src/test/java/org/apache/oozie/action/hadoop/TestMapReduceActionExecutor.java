@@ -144,6 +144,7 @@ public class TestMapReduceActionExecutor extends ActionExecutorTestCase {
         launcherJobConf = ae.createLauncherConf(getFileSystem(), context, action, actionXml, conf);
         assertEquals(getFsTestCaseDir() + "/job.jar", launcherJobConf.getJar());                // same for launcher
 
+        /*
         actionXml = createUberJarActionXML("job.jar", "<streaming></streaming>");
         conf = ae.createBaseHadoopConf(context, actionXml);
         ae.setupActionConf(conf, context, actionXml, getFsTestCaseDir());
@@ -165,6 +166,7 @@ public class TestMapReduceActionExecutor extends ActionExecutorTestCase {
         assertNull(conf.get("oozie.mapreduce.uber.jar"));                                       // doesn't resolve if not set
         launcherJobConf = ae.createLauncherConf(getFileSystem(), context, action, actionXml, conf);
         assertNull(launcherJobConf.getJar());                                                   // same for launcher conf
+        */
 
         // Disable uber jars to test that MapReduceActionExecutor won't allow the oozie.mapreduce.uber.jar property
         serv.getConf().setBoolean("oozie.action.mapreduce.uber.jar.enable", false);
