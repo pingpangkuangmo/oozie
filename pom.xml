@@ -845,6 +845,15 @@
                 <hadoop.version>${cdh.mr1.version}</hadoop.version>
             </properties>
         </profile>
+        <profile>
+            <id>loginServerExample</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>login</module>
+            </modules>
+        </profile>
     </profiles>
 
 </project>
