@@ -22,22 +22,24 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.3.0</version>
+        <version>3.3.0-cdh4.2.0-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-sharelib</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.0-cdh4.2.0-SNAPSHOT</version>
     <description>Apache Oozie Share Lib</description>
     <name>Apache Oozie Share Lib</name>
     <packaging>pom</packaging>
 
     <modules>
         <module>streaming</module>
+        <module>streaming-yarn</module>
+        <module>distcp</module>
+        <module>distcp-yarn</module>
         <module>pig</module>
         <module>hive</module>
         <module>sqoop</module>
         <module>oozie</module>
-        <module>distcp</module>
     </modules>
 
     <build>
@@ -64,9 +66,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
+                    <appendAssemblyId>true</appendAssemblyId>
                     <descriptors>
                         <descriptor>../src/main/assemblies/sharelib.xml</descriptor>
+                        <descriptor>../src/main/assemblies/sharelib-yarn.xml</descriptor>
                     </descriptors>
                 </configuration>
             </plugin>

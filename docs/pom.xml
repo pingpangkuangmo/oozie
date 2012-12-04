@@ -19,23 +19,35 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
         <groupId>org.apache.oozie</groupId>
-        <artifactId>oozie-main</artifactId>
-        <version>3.3.0</version>
-    </parent>
-    <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-docs</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.0-cdh4.2.0-SNAPSHOT</version>
     <description>Apache Oozie Docs</description>
     <name>Apache Oozie Docs</name>
     <packaging>war</packaging>
 
+  <properties>
+        <!-- to be able to run a single test case from the main project -->
+        <failIfNoTests>false</failIfNoTests>
+  </properties>
+
+     <pluginRepositories>
+        <pluginRepository>
+            <id>repository.cloudera.com</id>
+            <name>repository.cloudera.com-releases</name>
+            <url>https://repository.cloudera.com/artifactory/ext-release-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+ 
     <dependencies>
         <dependency>
             <groupId>org.apache.oozie</groupId>
             <artifactId>oozie-core</artifactId>
             <scope>provided</scope>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
@@ -101,6 +113,9 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
+                        <!-- Don't change version as doc generation may fail -->
+                        <!-- (using custom doxia for twiki pages generation) -->
+                        <version>2.0-beta-6</version>
                         <configuration>
                             <port>8888</port>
                             <outputEncoding>UTF-8</outputEncoding>

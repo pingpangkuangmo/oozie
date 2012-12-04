@@ -1,3 +1,5 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -15,23 +17,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<assembly>
-    <id>hadooplibs</id>
-    <formats>
-        <format>dir</format>
-        <format>tar.gz</format>
-    </formats>
-    <includeBaseDirectory>true</includeBaseDirectory>
-    <baseDirectory>oozie-${project.version}</baseDirectory>
-    <fileSets>
-        <!-- Hadoop libs -->
-        <fileSet>
-            <directory>${basedir}/../hadooplibs/hadoop-cdh4mr1/target/hadooplibs</directory>
-            <outputDirectory>/hadooplibs</outputDirectory>
-        </fileSet>
-        <fileSet>
-            <directory>${basedir}/../hadooplibs/hadoop-cdh4mr2/target/hadooplibs</directory>
-            <outputDirectory>/hadooplibs</outputDirectory>
-        </fileSet>
-    </fileSets>
-</assembly>
+<configuration>
+   <property>
+      <name>hadoop.bin.path</name>
+      <value>/usr/bin/hadoop</value>
+   </property>
+
+   <property>
+      <name>hadoop.config.dir</name>
+      <value>/etc/hadoop/conf</value>
+   </property>
+</configuration>

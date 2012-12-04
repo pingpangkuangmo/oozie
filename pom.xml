@@ -19,9 +19,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.cloudera.cdh</groupId>
+        <artifactId>cdh-root</artifactId>
+        <version>4.2.0-SNAPSHOT</version>
+    </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-main</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.0-cdh4.2.0-SNAPSHOT</version>
     <description>Apache Oozie Main</description>
     <name>Apache Oozie Main</name>
     <packaging>pom</packaging>
@@ -39,9 +44,6 @@
     </organization>
 
     <properties>
-        <distMgmtSnapshotsName>Apache Development Snapshot Repository</distMgmtSnapshotsName>
-        <distMgmtSnapshotsUrl>https://repository.apache.org/content/repositories/snapshots</distMgmtSnapshotsUrl>
-
         <!-- to be able to run a single test case from the main project -->
         <failIfNoTests>false</failIfNoTests>
 
@@ -66,24 +68,23 @@
         </oozie.test.default.config.file>
         <oozie.test.config.file>${oozie.test.default.config.file}</oozie.test.config.file>
 
-        <hadoop.version>1.0.1</hadoop.version>
+        <hadoop.version>${cdh.hadoop.version}</hadoop.version>
 
         <hadooplib.version>${hadoop.version}.oozie-${project.version}</hadooplib.version>
         
-        <clover.license>/home/jenkins/tools/clover/latest/lib/clover.license</clover.license>
         <!--
         This is required while we support a a pre 0.23 version of Hadoop which does not have
         the hadoop-auth artifact. After we phase-out pre 0.23 we can get rid of this property.
         -->
-        <hadoop.auth.version>2.0.2-alpha</hadoop.auth.version>
+        <hadoop.auth.version>${cdh.hadoop.version}</hadoop.auth.version>
 
          <!-- Sharelib component versions -->
-         <hive.version>0.9.0</hive.version>
-         <pig.version>0.9.0</pig.version>
-         <sqoop.version>1.5.0-incubating-SNAPSHOT</sqoop.version>
-         <streaming.version>${hadoop.version}</streaming.version>
+        <hive.version>${cdh.hive.version}</hive.version>
+        <pig.version>${cdh.pig.version}</pig.version>
+        <sqoop.version>${cdh.sqoop.version}</sqoop.version>
+        <streaming.version>${cdh.hadoop.version}</streaming.version>
          <distcp.version>${hadooplib.version}</distcp.version>
-         <hbase.version>0.94.0</hbase.version>
+         <hbase.version>${cdh.hbase.version}</hbase.version>
     </properties>
 
     <modules>
@@ -98,26 +99,26 @@
         <module>distro</module>
     </modules>
 
-    <distributionManagement>
-        <repository>
-          <id>apache.staging.https</id>
-          <name>Apache Release Distribution Repository</name>
-          <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
-        </repository>
-        <snapshotRepository>
-          <id>apache.snapshots.https</id>
-          <name>${distMgmtSnapshotsName}</name>
-          <url>${distMgmtSnapshotsUrl}</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <repositories>
+
         <repository>
-            <id>central</id>
-            <url>http://repo1.maven.org/maven2</url>
+            <id>cdh.repo</id>
+            <url>https://repository.cloudera.com/content/groups/cloudera-repos</url>
+            <name>Cloudera Repositories</name>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>cdh.snapshots.repo</id>
+            <url>https://repository.cloudera.com/content/repositories/snapshots</url>
+            <name>Cloudera Snapshots Repository</name>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+              <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
             <id>Codehaus repository</id>
@@ -133,6 +134,9 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+            <releases>
+              <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
             <id>datanucleus</id>
@@ -142,18 +146,8 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-    </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repository.cloudera.com</id>
-            <name>repository.cloudera.com-releases</name>
-            <url>https://repository.cloudera.com/artifactory/ext-release-local</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -256,6 +250,12 @@
                 <artifactId>persistence-api</artifactId>
                 <version>1.0</version>
             </dependency>
+
+          <dependency>
+              <groupId>org.slf4j</groupId>
+              <artifactId>slf4j-simple</artifactId>
+              <version>1.6.1</version>
+          </dependency>
 
             <!-- core -->
             <dependency>
@@ -436,16 +436,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.5.8</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>1.5.8</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.hive</groupId>
                 <artifactId>hive-builtins</artifactId>
                 <version>${hive.version}</version>
@@ -603,12 +593,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>11.0.2</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.sqoop</groupId>
                 <artifactId>sqoop</artifactId>
                 <version>${sqoop.version}</version>
@@ -624,13 +608,6 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>1.8.5</version>
-            </dependency>
-
-            <!-- examples -->
-            <dependency>
-                <groupId>commons-httpclient</groupId>
-                <artifactId>commons-httpclient</artifactId>
-                <version>3.0.1</version>
             </dependency>
 
             <dependency>
@@ -727,24 +704,6 @@
 
         <plugins>
             <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-clover2-plugin</artifactId>
-                <configuration>
-                    <licenseLocation>${clover.license}</licenseLocation>
-                    <generateXml>true</generateXml>
-                    <generateHtml>true</generateHtml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <configuration>
-                    <xmlOutput>true</xmlOutput>
-                    <findbugsXmlOutput>true</findbugsXmlOutput>
-                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <inherited>false</inherited>
@@ -807,6 +766,7 @@
                     </systemPropertyVariables>
                     <environmentVariables>
                         <HADOOP_HOME>dummy</HADOOP_HOME>
+                        <MALLOC_ARENA_MAX>4</MALLOC_ARENA_MAX>
                     </environmentVariables>
                     <excludes>
                         <exclude>**/${test.exclude}.java</exclude>
@@ -823,10 +783,6 @@
                         <!-- See 'testSqoop' profile in core/pom.xml and the Building doc-->
                         <exclude>**/TestSqoop*.java</exclude>
                     </excludes>
-                    <!-- DO NOT CHANGE THIS VALUES, TESTCASES CANNOT RUN IN PARALLEL -->
-                    <parallel>classes</parallel>
-                    <threadCount>1</threadCount>
-                    <perCoreThreadCount>1</perCoreThreadCount>
                 </configuration>
             </plugin>
             <plugin>
@@ -855,8 +811,6 @@
                         <exclude>webapp/src/main/resources/.gitignore</exclude>
                         <exclude>**/target/**</exclude>
                         <exclude>**/build/**</exclude>
-                        <exclude>.git/**</exclude>
-                        <exclude>test-patch/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -878,27 +832,13 @@
             </properties>
         </profile>
         <profile>
-            <id>testPatchCompile</id>
+            <id>mr1</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <fork>true</fork>
-                            <source>1.6</source>
-                            <target>1.6</target>
-                            <compilerArguments>
-                                <Xlint/>
-                                <Xmaxwarns>9999</Xmaxwarns>
-                            </compilerArguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <properties>
+                <hadoop.version>${cdh.mr1.version}</hadoop.version>
+            </properties>
         </profile>
     </profiles>
 
