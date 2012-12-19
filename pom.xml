@@ -87,6 +87,9 @@
 
         <hbase.version>${cdh.hbase.version}</hbase.version>
         <hbaselib.version>${hbase.version}.oozie-${project.version}</hbaselib.version>
+
+         <!-- Tomcat version -->
+         <tomcat.version>6.0.36</tomcat.version>
     </properties>
 
     <modules>
