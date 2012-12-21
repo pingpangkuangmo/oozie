@@ -83,13 +83,16 @@
         <pig.version>${cdh.pig.version}</pig.version>
         <sqoop.version>${cdh.sqoop.version}</sqoop.version>
         <streaming.version>${cdh.hadoop.version}</streaming.version>
-         <distcp.version>${hadooplib.version}</distcp.version>
-         <hbase.version>${cdh.hbase.version}</hbase.version>
+        <distcp.version>${hadooplib.version}</distcp.version>
+
+        <hbase.version>${cdh.hbase.version}</hbase.version>
+        <hbaselib.version>${hbase.version}.oozie-${project.version}</hbaselib.version>
     </properties>
 
     <modules>
         <module>client</module>
         <module>hadooplibs</module>
+        <module>hbaselibs</module>
         <module>core</module>
         <module>webapp</module>
         <module>examples</module>
@@ -258,6 +261,12 @@
           </dependency>
 
             <!-- core -->
+             <dependency>
+                <groupId>org.apache.oozie</groupId>
+                <artifactId>oozie-hbase</artifactId>
+                <version>${hbaselib.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.oozie</groupId>
                 <artifactId>oozie-hadoop</artifactId>
@@ -322,12 +331,6 @@
                 <groupId>org.apache.oozie</groupId>
                 <artifactId>oozie-hadoop-distcp</artifactId>
                 <version>${distcp.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.hbase</groupId>
-                <artifactId>hbase</artifactId>
-                <version>${hbase.version}</version>
             </dependency>
 
             <dependency>
@@ -623,6 +626,11 @@
                 <version>2.10.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase</artifactId>
+                <version>${cdh.hbase.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
