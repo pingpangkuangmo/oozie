@@ -237,7 +237,7 @@ The =${coord:days(int n)}= EL function includes *all* the minutes of the current
 
 For all these examples, the first occurrence of the frequency will be at =08:00Z= (UTC time).
 
----+++++ 4.4.1.3-SNAPSHOT. The coord:endOfDays(int n) EL function
+---+++++ 4.4.1.3. The coord:endOfDays(int n) EL function
 
 The =${coord:endOfDays(int n)}= EL function is identical to the =${coord:days(int n)}= except that it shifts the first occurrence to the end of the day for the specified timezone before computing the interval in minutes.
 
