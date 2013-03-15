@@ -44,6 +44,8 @@
     </organization>
 
     <properties>
+        <javaVersion>1.6</javaVersion>
+
         <!-- to be able to run a single test case from the main project -->
         <failIfNoTests>false</failIfNoTests>
 
@@ -743,7 +745,7 @@
                             <version>[3.0.0,)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
-                            <version>1.6</version>
+                          <version>[${javaVersion}.0,${javaVersion}.1000}]</version>
                         </requireJavaVersion>
                         <requireOS>
                             <family>unix</family>
