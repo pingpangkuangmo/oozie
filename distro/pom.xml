@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-distro</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
     <description>Apache Oozie Distro</description>
     <name>Apache Oozie Distro</name>
     <packaging>jar</packaging>
@@ -88,7 +88,7 @@
                         <configuration>
                             <target>
                                 <mkdir dir="downloads"/>
-                                <get src="http://archive.apache.org/dist/tomcat/tomcat-6/v${tomcat.version}/bin/apache-tomcat-${tomcat.version}.tar.gz"
+                                <get src="http://archive.cloudera.com/tarballs/apache-tomcat-${tomcat.version}.tar.gz"
                                      dest="downloads/tomcat.tar.gz" verbose="true" skipexisting="true"/>
                                 <delete dir="target/tomcat"/>
                                 <mkdir dir="target/tomcat"/>

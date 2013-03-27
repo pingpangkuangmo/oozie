@@ -22,12 +22,12 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
         <relativePath>../..</relativePath>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-sharelib-distcp</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
     <description>Apache Oozie Share Lib Distcp</description>
     <name>Apache Oozie Share Lib Distcp</name>
     <packaging>jar</packaging>
@@ -41,7 +41,14 @@
         <dependency>
             <groupId>org.apache.oozie</groupId>
             <artifactId>oozie-hadoop-distcp</artifactId>
+            <version>${cdh.mr1.version}.oozie-${project.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

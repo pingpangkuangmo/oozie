@@ -22,17 +22,17 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-hbaselibs</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
     <description>Apache Oozie Hbase Libs</description>
     <name>Apache Oozie Hbase Libs</name>
     <packaging>pom</packaging>
 
     <modules>
-        <module>hbase-0.94</module>
+        <module>hbase-cdh4</module>
     </modules>
 
     <build>

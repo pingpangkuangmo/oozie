@@ -26,7 +26,7 @@
     <fileSets>
         <!-- Hbase libs -->
         <fileSet>
-            <directory>${basedir}/../hbaselibs/hbase-0.94/target/hbaselibs</directory>
+            <directory>${basedir}/../hbaselibs/hbase-cdh4/target/hbaselibs</directory>
             <outputDirectory>/hbaselibs</outputDirectory>
         </fileSet>
     </fileSets>

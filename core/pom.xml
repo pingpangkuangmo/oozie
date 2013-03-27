@@ -22,11 +22,11 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-core</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.2-cdh4.3.0-SNAPSHOT</version>
     <description>Apache Oozie Core</description>
     <name>Apache Oozie Core</name>
     <packaging>jar</packaging>
@@ -226,7 +226,6 @@
         <dependency>
             <groupId>org.apache.pig</groupId>
             <artifactId>pig</artifactId>
-            <version>0.8.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -291,7 +290,6 @@
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr-runtime</artifactId>
-            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -544,19 +542,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <excludes>
-                                <exclude>**/TestRerun.java</exclude>
-                                <exclude>**/TestCallableQueueService.java</exclude>
                                 <exclude>**/TestSsh*.java</exclude>
-                                <exclude>**/TestSqoop*.java</exclude>
-                                <exclude>**/TestActionErrors.java</exclude>
-                                <exclude>**/TestJavaActionExecutor.java</exclude>
-                                <exclude>**/TestLauncher.java</exclude>
-                                <exclude>**/TestShellActionExecutor.java</exclude>
-                                <exclude>**/TestActionStartXCommand.java</exclude>
-                                <exclude>**/TestActionCheckXCommand.java</exclude>
-                                <exclude>**/TestCoordRerunXCommand.java</exclude>
-                                <exclude>**/util/Test**</exclude>
-                                <exclude>**/bundle/Test**</exclude>
                                 <exclude>**/${test.exclude.pattern}/*</exclude>
                             </excludes>
                         </configuration>
@@ -660,34 +646,6 @@
                     <artifactId>ojdbc6</artifactId>
                 </dependency>
             </dependencies>
-        </profile>
-
-        <!-- Forcing Hadoop 0.20.2-cdh3u2 version because Sqoop    -->
-        <!-- uses Hadoop API that is avail 0.21 onwards and the    -->
-        <!-- Hadoop CDH version is the only stable version that    -->
-        <!-- currently has such API (SQOOP-384) and published      -->
-        <!-- in public Maven repos. This is a temporary fix        -->
-        <profile>
-            <id>testSqoop</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-                <property>
-                    <name>testSqoop</name>
-                </property>
-            </activation>
-            <properties>
-                <hadoop.version>0.20.2-cdh3u2</hadoop.version>
-            </properties>
-            <repositories>
-                <repository>
-                    <id>cdh.releases.repo</id>
-                    <url>https://repository.cloudera.com/content/groups/cdh-releases-rcs</url>
-                    <name>CDH Releases Repository</name>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </repository>
-            </repositories>
         </profile>
     </profiles>
 
