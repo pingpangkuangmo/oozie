@@ -98,7 +98,6 @@
         <module>hadooplibs</module>
         <module>hbaselibs</module>
         <module>core</module>
-        <module>tests</module>
         <module>webapp</module>
         <module>examples</module>
         <module>docs</module>
