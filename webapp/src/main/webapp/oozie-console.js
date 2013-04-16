@@ -554,7 +554,7 @@ function jobDetailsPopup(response, request) {
 				labelWidth : 70,
 				items : urlUnit
 			};
-            if (actionStatus.type == "pig") {
+            if (actionStatus.type == "pig" || actionStatus.type == "hive") {
 				var tabPanel = win.items.get(0);
 				tabPanel.add(childJobsItem);
 			}
