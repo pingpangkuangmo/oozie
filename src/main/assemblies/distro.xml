@@ -157,10 +157,6 @@
             <source>${basedir}/../sharelib/target/oozie-sharelib-${project.version}-sharelib.tar.gz</source>
             <outputDirectory>/</outputDirectory>
         </file>
-        <file>
-            <source>${basedir}/../sharelib/target/oozie-sharelib-${project.version}-sharelib-yarn.tar.gz</source>
-            <outputDirectory>/</outputDirectory>
-        </file>
         <!-- Oozie hadooplibs TAR.GZ  -->
         <file>
             <source>${basedir}/../hadooplibs/target/oozie-hadooplibs-${project.version}.tar.gz</source>
