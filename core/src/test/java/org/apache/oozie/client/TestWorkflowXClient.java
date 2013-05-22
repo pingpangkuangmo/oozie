@@ -115,10 +115,57 @@ public class TestWorkflowXClient extends DagServletTestCase {
                 Properties conf = wc.createConfiguration();
                 Path libPath = new Path(getFsTestCaseDir(), "lib");
                 getFileSystem().mkdirs(libPath);
-                conf.setProperty(OozieClient.LIBPATH, libPath.toString());
-                conf.setProperty(XOozieClient.JT, "localhost:9001");
-                conf.setProperty(XOozieClient.NN, "hdfs://localhost:9000");
 
+                String localPath = libPath.toUri().getPath();
+                int startPosition = libPath.toString().indexOf(localPath);
+                String nn = libPath.toString().substring(0, startPosition);
+
+                // try to submit without JT and NN
+                try {
+                    wc.submitMapReduce(conf);
+                    fail("submit client without JT should throw exception");
+                }
+                catch (RuntimeException exception) {
+                    assertEquals("java.lang.RuntimeException: jobtracker is not specified in conf", exception.toString());
+                }
+                conf.setProperty(XOozieClient.JT, "localhost:9001");
+                try {
+                    wc.submitMapReduce(conf);
+                    fail("submit client without NN should throw exception");
+                }
+                catch (RuntimeException exception) {
+                    assertEquals("java.lang.RuntimeException: namenode is not specified in conf", exception.toString());
+                }
+                // set fs.default.name
+                conf.setProperty(XOozieClient.NN, nn);
+                try {
+                    wc.submitMapReduce(conf);
+                    fail("submit client without LIBPATH should throw exception");
+                }
+                catch (RuntimeException exception) {
+                    assertEquals("java.lang.RuntimeException: libpath is not specified in conf", exception.toString());
+                }
+                // set fs.defaultFS instead
+                conf.remove(XOozieClient.NN);
+                conf.setProperty(XOozieClient.NN_2, nn);
+                try {
+                    wc.submitMapReduce(conf);
+                    fail("submit client without LIBPATH should throw exception");
+                }
+                catch (RuntimeException exception) {
+                    assertEquals("java.lang.RuntimeException: libpath is not specified in conf", exception.toString());
+                }
+
+                conf.setProperty(OozieClient.LIBPATH, localPath.substring(1));
+                try {
+                    wc.submitMapReduce(conf);
+                    fail("lib path can not be relative");
+                }
+                catch (RuntimeException e) {
+                    assertEquals("java.lang.RuntimeException: libpath should be absolute", e.toString());
+                }
+
+                conf.setProperty(OozieClient.LIBPATH, localPath);
 
                 assertEquals(MockDagEngineService.JOB_ID + wfCount + MockDagEngineService.JOB_ID_END,
                              wc.submitMapReduce(conf));
