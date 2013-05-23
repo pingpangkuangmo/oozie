@@ -1196,7 +1196,7 @@ public class CoordELFunctions {
      * @return current instance i.e. current(0) returns null if effectiveTime is earlier than Initial Instance time of
      *         the dataset.
      */
-    private static Calendar getCurrentInstance(Date effectiveTime, int instanceCount[]) {
+    public static Calendar getCurrentInstance(Date effectiveTime, int instanceCount[]) {
         ELEvaluator eval = ELEvaluator.getCurrent();
         return getCurrentInstance(effectiveTime, instanceCount, eval);
     }
@@ -1240,7 +1240,7 @@ public class CoordELFunctions {
         return current;
     }
 
-    private static Calendar getEffectiveNominalTime() {
+    public static Calendar getEffectiveNominalTime() {
         Date datasetInitialInstance = getInitialInstance();
         TimeZone dsTZ = getDatasetTZ();
         // Convert Date to Calendar for corresponding TZ
@@ -1302,7 +1302,7 @@ public class CoordELFunctions {
     /**
      * @return dataset TimeZone
      */
-    private static TimeZone getDatasetTZ() {
+    public static TimeZone getDatasetTZ() {
         ELEvaluator eval = ELEvaluator.getCurrent();
         return getDatasetTZ(eval);
     }
