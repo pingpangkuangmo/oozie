@@ -40,6 +40,7 @@ public class CoordJobGetActionsSubsetJPAExecutor implements JPAExecutor<List<Coo
     private String coordJobId = null;
     private int start = 1;
     private int len = 50;
+    private boolean desc = false;
     private List<String> filterList;
 
     public CoordJobGetActionsSubsetJPAExecutor(String coordJobId) {
@@ -47,12 +48,13 @@ public class CoordJobGetActionsSubsetJPAExecutor implements JPAExecutor<List<Coo
         this.coordJobId = coordJobId;
     }
 
-    public CoordJobGetActionsSubsetJPAExecutor(String coordJobId, List<String> filterList, int start, int len) {
+    public CoordJobGetActionsSubsetJPAExecutor(String coordJobId, List<String> filterList, int start, int len, boolean desc) {
         this(coordJobId);
         ParamChecker.notNull(filterList, "filterList");
         this.filterList = filterList;
         this.start = start;
         this.len = len;
+        this.desc = desc;
     }
 
     @Override
@@ -103,6 +105,9 @@ public class CoordJobGetActionsSubsetJPAExecutor implements JPAExecutor<List<Coo
             // Insert 'where' before 'order by'
             sbTotal.insert(offset, statusClause);
             q = em.createQuery(sbTotal.toString());
+        }
+        if (desc) {
+            q = em.createQuery(q.toString().concat(" desc"));
         }
         q.setParameter("jobId", coordJobId);
         q.setFirstResult(start - 1);
