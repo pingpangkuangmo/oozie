@@ -90,6 +90,8 @@
 
          <!-- Tomcat version -->
          <tomcat.version>6.0.36</tomcat.version>
+
+         <openjpa.version>2.2.2</openjpa.version>
     </properties>
 
     <modules>
@@ -285,7 +287,7 @@
             <dependency>
                 <groupId>org.apache.openjpa</groupId>
                 <artifactId>openjpa-persistence</artifactId>
-                <version>2.1.0</version>
+                <version>${openjpa.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>junit</groupId>
@@ -303,7 +305,7 @@
             <dependency>
                 <groupId>org.apache.openjpa</groupId>
                 <artifactId>openjpa-jdbc</artifactId>
-                <version>2.1.0</version>
+                <version>${openjpa.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>postgresql</groupId>
@@ -315,7 +317,7 @@
             <dependency>
                 <groupId>org.apache.openjpa</groupId>
                 <artifactId>openjpa-persistence-jdbc</artifactId>
-                <version>2.1.0</version>
+                <version>${openjpa.version}</version>
             </dependency>
 
             <dependency>
@@ -716,6 +718,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.openjpa</groupId>
+                    <artifactId>openjpa-maven-plugin</artifactId>
+                    <version>${openjpa.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
