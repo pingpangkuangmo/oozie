@@ -22,12 +22,12 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>3.3.0-cdh4.2.1</version>
+        <version>3.3.0-cdh4.2.2</version>
         <relativePath>../..</relativePath>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-sharelib-distcp-yarn</artifactId>
-    <version>3.3.0-cdh4.2.1</version>
+    <version>3.3.0-cdh4.2.2</version>
     <description>Apache Oozie Share Lib Distcp Yarn</description>
     <name>Apache Oozie Share Lib Distcp Yarn</name>
     <packaging>jar</packaging>

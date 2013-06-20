@@ -311,7 +311,7 @@ The =${coord:months(int n)}= and =${coord:endOfMonths(int n)}= EL functions shou
 
 Constant values cannot be used to indicate a month based frequency because the number of days in a month changes month to month and on leap years; plus the number of hours in every day of the month are not always the same for timezones that observe daylight-saving time.
 
----++++ 4.4.2.1. The coord:months(int n) EL function
+---++++ 4.4.2.2. The coord:months(int n) EL function
 
 The =${coord:months(int n)}= EL function returns the number of minutes for 'n' complete months starting with the month of the current nominal time for which the computation is being done.
 

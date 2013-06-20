@@ -1550,7 +1550,7 @@ Oozie, besides allowing the use of workflow job properties to parameterize workf
 in EL functions that enable a more complex parameterization of workflow action nodes as well as the predicates in
 decision nodes.
 
----++++ 4.2.1 Basic EL Constants
+---++++ 4.2.2 Basic EL Constants
 
    * *KB:* 1024, one kilobyte.
    * *MB:* 1024 * KB, one megabyte.
