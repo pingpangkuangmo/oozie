@@ -191,7 +191,7 @@ public class SuspendXCommand extends WorkflowXCommand<Void> {
      */
     @Override
     protected void loadState() throws CommandException {
-
+        eagerLoadState();
     }
 
     /* (non-Javadoc)
@@ -199,5 +199,6 @@ public class SuspendXCommand extends WorkflowXCommand<Void> {
      */
     @Override
     protected void verifyPrecondition() throws CommandException, PreconditionException {
+        eagerVerifyPrecondition();
     }
 }

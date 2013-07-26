@@ -133,6 +133,7 @@ public class ActionCheckXCommand extends ActionXCommand<Void> {
 
     @Override
     protected void loadState() throws CommandException {
+        eagerLoadState();
     }
 
     @Override
