@@ -132,6 +132,11 @@ public class CoordActionCheckXCommand extends CoordinatorXCommand<Void> {
         return actionId;
     }
 
+    @Override
+    public String getKey() {
+        return getName() + "_" + actionId;
+    }
+
     /* (non-Javadoc)
      * @see org.apache.oozie.command.XCommand#isLockRequired()
      */
