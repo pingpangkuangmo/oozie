@@ -557,7 +557,7 @@ public abstract class XDataTestCase extends XFsTestCase {
 
             if (wfId != null) {
                 WorkflowJobBean wfJob = jpaService.execute(new WorkflowJobGetJPAExecutor(wfId));
-                wfJob.setParentId(jobId);
+                wfJob.setParentId(action.getId());
                 jpaService.execute(new WorkflowJobUpdateJPAExecutor(wfJob));
             }
         }
