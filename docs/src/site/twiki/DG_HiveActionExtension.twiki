@@ -168,6 +168,11 @@ The Hive action can be configured to work with Hive Server 2 (via BeeLine) with 
 <verbatim>
     !connect jdbc:hive2://HOST:PORT USERNAME PASSWORD org.apache.hive.jdbc.HiveDriver
 </verbatim>
+where =USERNAME= and =PASSWORD= are both arbitrary in the secure case, but only =PASSWORD= is arbitrary in the non-secure case (that
+is, in non-secure case, the =USERNAME= must be the same as the user submitting the workflow).
+
+See [[DG_UnifiedCredentialsModule][here]] for more information on the configuration for using the Hive Action with Hive Server 2
+in a secure mode.
 
 ---++ Appendix, Hive XML-Schema
 
