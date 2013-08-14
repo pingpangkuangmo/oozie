@@ -237,6 +237,10 @@ public class Hive2Main extends LauncherMain {
         arguments.add("-f");
         arguments.add(scriptPath);
 
+        // This tells BeeLine to look for a delegation token; otherwise it won't and will fail in secure mode because there are no
+        // Kerberos credentials.  In non-secure mode, this argument is ignored so we can simply always pass it.
+        arguments.add("-a");
+        arguments.add("delegationToken");
 
         System.out.println("Beeline command arguments :");
         for (String arg : arguments) {
