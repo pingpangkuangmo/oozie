@@ -80,10 +80,6 @@
                     <groupId>org.apache.httpcomponents</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>jline</artifactId>
-                    <groupId>jline</groupId>
-                </exclusion>
-                <exclusion>
                     <artifactId>commons-logging</artifactId>
                     <groupId>commons-logging</groupId>
                 </exclusion>
