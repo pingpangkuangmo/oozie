@@ -198,6 +198,18 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>parquet-pig-bundle</artifactId>
+            <version>${cdh.parquet.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <build>
