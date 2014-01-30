@@ -46,6 +46,7 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.AccessControlException;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.JobID;
@@ -748,8 +749,9 @@ public class JavaActionExecutor extends ActionExecutor {
                 // insert credentials tokens to launcher job conf if needed
                 if (needInjectCredentials()) {
                     for (Token<? extends TokenIdentifier> tk : credentialsConf.getCredentials().getAllTokens()) {
-                        log.debug("ADDING TOKEN: " + tk.getKind().toString());
-                        launcherJobConf.getCredentials().addToken(tk.getKind(), tk);
+                        Text fauxAlias = new Text(tk.getKind() + "_" + tk.getService());
+                        log.debug("ADDING TOKEN: " + fauxAlias);
+                        launcherJobConf.getCredentials().addToken(fauxAlias, tk);
                     }
                 }
                 else {
