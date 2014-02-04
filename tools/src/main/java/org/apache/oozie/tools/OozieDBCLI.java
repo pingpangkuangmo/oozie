@@ -39,6 +39,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -634,29 +635,64 @@ public class OozieDBCLI {
         else if (dbVendor.equals("derby")) {
             convertClobToBlobinDerby(conn);
         }
-        System.out.println("Dropping discriminator column");
-        PrintWriter writer = new PrintWriter(new FileWriter(sqlFile, true));
-        writer.println();
-        ArrayList<String> ddlQueries = new ArrayList<String>();
-        ddlQueries.add(getDropColumnQuery("WF_JOBS", DISCRIMINATOR_COLUMN));
-        ddlQueries.add(getDropColumnQuery("WF_ACTIONS", DISCRIMINATOR_COLUMN));
-        ddlQueries.add(getDropColumnQuery("COORD_JOBS", DISCRIMINATOR_COLUMN));
-        ddlQueries.add(getDropColumnQuery("COORD_ACTIONS", DISCRIMINATOR_COLUMN));
-        ddlQueries.add(getDropColumnQuery("BUNDLE_JOBS", DISCRIMINATOR_COLUMN));
-        ddlQueries.add(getDropColumnQuery("BUNDLE_ACTIONS", DISCRIMINATOR_COLUMN));
-        Statement stmt = conn != null ? conn.createStatement() : null;
-        for (String query : ddlQueries) {
-            writer.println(query + ";");
+        // CLOUDERA-BUILD: We backported OOZIE-1463 (which already removes these columns) to c5b1; so if upgrading from c5b1, these
+        // columns won't exist and trying to drop them will fail
+        if (discriminatorColumnsExist(conn)) {
+            System.out.println("Dropping discriminator column");
+            PrintWriter writer = new PrintWriter(new FileWriter(sqlFile, true));
+            writer.println();
+            ArrayList<String> ddlQueries = new ArrayList<String>();
+            ddlQueries.add(getDropColumnQuery("WF_JOBS", DISCRIMINATOR_COLUMN));
+            ddlQueries.add(getDropColumnQuery("WF_ACTIONS", DISCRIMINATOR_COLUMN));
+            ddlQueries.add(getDropColumnQuery("COORD_JOBS", DISCRIMINATOR_COLUMN));
+            ddlQueries.add(getDropColumnQuery("COORD_ACTIONS", DISCRIMINATOR_COLUMN));
+            ddlQueries.add(getDropColumnQuery("BUNDLE_JOBS", DISCRIMINATOR_COLUMN));
+            ddlQueries.add(getDropColumnQuery("BUNDLE_ACTIONS", DISCRIMINATOR_COLUMN));
+            Statement stmt = conn != null ? conn.createStatement() : null;
+            for (String query : ddlQueries) {
+                writer.println(query + ";");
+                if (run) {
+                    stmt.executeUpdate(query);
+                }
+            }
+            System.out.println("DONE");
+            writer.close();
             if (run) {
-                stmt.executeUpdate(query);
+                stmt.close();
             }
         }
-        System.out.println("DONE");
-        writer.close();
         if (run) {
-            stmt.close();
             conn.close();
         }
+    }
+
+    private boolean discriminatorColumnsExist(Connection conn) throws Exception {
+        boolean exist = false;
+        boolean shouldCloseConnection = false;
+        try {
+            if (conn == null) {
+                shouldCloseConnection = true;
+                conn = createConnection();
+            }
+            Statement st = conn.createStatement();
+            try {
+                ResultSet rs = st.executeQuery("SELECT bean_type FROM wf_jobs");
+                if (rs.next()) {
+                    exist = true;
+                }
+                rs.close();
+            }
+            catch (SQLException e) {
+                exist = false;
+            }
+            st.close();
+        }
+        finally {
+            if (shouldCloseConnection) {
+                conn.close();
+            }
+        }
+        return exist;
     }
 
     private Map<String, List<String>> getTableClobColumnMap() {
