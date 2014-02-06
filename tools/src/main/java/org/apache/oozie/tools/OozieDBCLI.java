@@ -39,6 +39,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -635,8 +636,9 @@ public class OozieDBCLI {
         else if (dbVendor.equals("derby")) {
             convertClobToBlobinDerby(conn);
         }
-        // CLOUDERA-BUILD: We backported OOZIE-1463 (which already removes these columns) to c5b1; so if upgrading from c5b1, these
-        // columns won't exist and trying to drop them will fail
+        // CLOUDERA-BUILD: We backported OOZIE-1463 (which already removes these columns without dropping them) to c5b1; so if
+        // upgrading from c5b1, these columns won't exist if the database was created in c5b1 but will exist if created in c4
+        // and upgraded to c5b1
         if (discriminatorColumnsExist(conn)) {
             System.out.println("Dropping discriminator column");
             PrintWriter writer = new PrintWriter(new FileWriter(sqlFile, true));
@@ -676,10 +678,16 @@ public class OozieDBCLI {
             }
             Statement st = conn.createStatement();
             try {
-                ResultSet rs = st.executeQuery("SELECT bean_type FROM wf_jobs");
+                ResultSet rs = st.executeQuery("SELECT * FROM WF_JOBS");
                 if (rs != null) {
-                    if (rs.next()) {
-                        exist = true;
+                    ResultSetMetaData metadata = rs.getMetaData();
+                    int columnCount = metadata.getColumnCount();
+
+                    for (int i = 1; i <= columnCount && !exist; i++) {
+                      String columnName = metadata.getColumnName(i);
+                      if (columnName.equalsIgnoreCase(DISCRIMINATOR_COLUMN)) {
+                          exist = true;
+                      }
                     }
                     rs.close();
                 }
