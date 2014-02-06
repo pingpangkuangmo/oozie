@@ -677,13 +677,15 @@ public class OozieDBCLI {
             Statement st = conn.createStatement();
             try {
                 ResultSet rs = st.executeQuery("SELECT bean_type FROM wf_jobs");
-                if (rs.next()) {
-                    exist = true;
+                if (rs != null) {
+                    if (rs.next()) {
+                        exist = true;
+                    }
+                    rs.close();
                 }
-                rs.close();
             }
             catch (SQLException e) {
-                exist = false;
+                // nop
             }
             st.close();
         }
