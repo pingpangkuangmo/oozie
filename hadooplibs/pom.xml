@@ -35,9 +35,11 @@
         <module>hadoop-cdh5mr1</module>
         <module>hadoop-distcp-cdh5mr1</module>
         <module>hadoop-test-cdh5mr1</module>
+        <module>hadoop-utils-cdh5mr1</module>
         <module>hadoop-cdh5mr2</module>
         <module>hadoop-test-cdh5mr2</module>
         <module>hadoop-distcp-cdh5mr2</module>
+        <module>hadoop-utils-cdh5mr2</module>
     </modules>
 
     <build>

@@ -228,6 +228,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.oozie</groupId>
+            <artifactId>oozie-hadoop-utils</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.twitter</groupId>
             <artifactId>parquet-pig-bundle</artifactId>
             <version>${cdh.parquet.version}</version>
