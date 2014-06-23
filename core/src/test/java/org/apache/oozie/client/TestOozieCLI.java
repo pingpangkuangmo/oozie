@@ -78,6 +78,16 @@ public class TestOozieCLI extends DagServletTestCase {
         return path;
     }
 
+    private String createCoodrConfigFile(String appPath) throws Exception {
+        String path = getTestCaseDir() + "/" + getName() + ".xml";
+        Configuration conf = new Configuration(false);
+        conf.set(OozieClient.COORDINATOR_APP_PATH, appPath);
+        OutputStream os = new FileOutputStream(path);
+        conf.writeXml(os);
+        os.close();
+        return path;
+    }
+
     private String createPropertiesFile(String appPath) throws Exception {
         String path = getTestCaseDir() + "/" + getName() + ".properties";
         Properties props = new Properties();
@@ -1122,6 +1132,74 @@ public class TestOozieCLI extends DagServletTestCase {
                 return null;
             }
         });
+    }
+
+    public void testJobDryrun() throws Exception {
+        runTest(END_POINTS, SERVLET_CLASSES, false, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                HeaderTestingVersionServlet.OOZIE_HEADERS.clear();
+                Path appPath = new Path(getFsTestCaseDir(), "app");
+                getFileSystem().mkdirs(appPath);
+                getFileSystem().create(new Path(appPath, "coordinator.xml")).close();
+                String oozieUrl = getContextURL();
+                String[] args = new String[] { "job", "-dryrun", "-config", createCoodrConfigFile(appPath.toString()),
+                        "-oozie", oozieUrl, "-Doozie.proxysubmission=true" };
+                assertEquals(0, new OozieCLI().run(args));
+                assertEquals(MockCoordinatorEngineService.did, RestConstants.JOB_ACTION_DRYRUN);
+                assertFalse(MockCoordinatorEngineService.started.get(1));
+                return null;
+            }
+        });
+    }
+
+    public void testUpdate() throws Exception {
+        runTest(END_POINTS, SERVLET_CLASSES, false, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                HeaderTestingVersionServlet.OOZIE_HEADERS.clear();
+                String oozieUrl = getContextURL();
+                String[] args = new String[] { "job", "-update", "aaa", "-oozie", oozieUrl };
+                assertEquals(-1, new OozieCLI().run(args));
+                assertEquals(MockCoordinatorEngineService.did, RestConstants.JOB_COORD_UPDATE );
+                assertFalse(MockCoordinatorEngineService.started.get(1));
+                return null;
+            }
+        });
+
+    }
+
+    public void testUpdateWithDryrun() throws Exception {
+        runTest(END_POINTS, SERVLET_CLASSES, false, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                HeaderTestingVersionServlet.OOZIE_HEADERS.clear();
+
+                String oozieUrl = getContextURL();
+                String[] args = new String[] { "job", "-update", "aaa", "-dryrun", "-oozie", oozieUrl };
+                assertEquals(-1, new OozieCLI().run(args));
+                assertEquals(MockCoordinatorEngineService.did, RestConstants.JOB_COORD_UPDATE + "&"
+                        + RestConstants.JOB_ACTION_DRYRUN);
+                assertFalse(MockCoordinatorEngineService.started.get(1));
+                return null;
+            }
+        });
+
+    }
+
+    public void testFailNoArg() throws Exception {
+        runTest(END_POINTS, SERVLET_CLASSES, false, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                HeaderTestingVersionServlet.OOZIE_HEADERS.clear();
+
+                String oozieUrl = getContextURL();
+                String[] args = new String[] { "job", "-oozie", oozieUrl };
+                assertEquals(-1, new OozieCLI().run(args));
+                return null;
+            }
+        });
+
     }
 
 }
