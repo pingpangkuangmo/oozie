@@ -36,6 +36,8 @@ import org.apache.oozie.executor.jpa.CoordJobGetActionsJPAExecutor;
 import org.apache.oozie.executor.jpa.CoordJobGetJPAExecutor;
 import org.apache.oozie.executor.jpa.CoordJobGetRunningActionsCountJPAExecutor;
 import org.apache.oozie.executor.jpa.CoordJobInsertJPAExecutor;
+import org.apache.oozie.executor.jpa.CoordJobQueryExecutor;
+import org.apache.oozie.executor.jpa.CoordJobQueryExecutor.CoordJobQuery;
 import org.apache.oozie.executor.jpa.JPAExecutorException;
 import org.apache.oozie.executor.jpa.CoordJobGetActionsSubsetJPAExecutor;
 import org.apache.oozie.executor.jpa.SLAEventsGetForSeqIdJPAExecutor;
@@ -291,6 +293,35 @@ public class TestCoordMaterializeTransitionXCommand extends XDataTestCase {
         }
     }
 
+    public void testActionMaterwithCronFrequencyWithThrottle() throws Exception {
+        Date startTime = DateUtils.parseDateOozieTZ("2013-07-18T00:00Z");
+        Date endTime = DateUtils.parseDateOozieTZ("2013-07-18T01:00Z");
+        CoordinatorJobBean job = addRecordToCoordJobTable(CoordinatorJob.Status.RUNNING, startTime, endTime, null,
+                "0/10 * * * *");
+        job.setMatThrottling(3);
+        CoordJobQueryExecutor.getInstance().executeUpdate(CoordJobQuery.UPDATE_COORD_JOB, job);
+
+        new CoordMaterializeTransitionXCommand(job.getId(), 3600).call();
+        Date[] nominalTimes = new Date[] {DateUtils.parseDateOozieTZ("2013-07-18T00:00Z"),
+                DateUtils.parseDateOozieTZ("2013-07-18T00:10Z"),
+                DateUtils.parseDateOozieTZ("2013-07-18T00:20Z"),
+                DateUtils.parseDateOozieTZ("2013-07-18T00:30Z"),
+                DateUtils.parseDateOozieTZ("2013-07-18T00:40Z"),
+                DateUtils.parseDateOozieTZ("2013-07-18T00:50Z")};
+        checkCoordActionsNominalTime(job.getId(), 6, nominalTimes);
+
+        try {
+            JPAService jpaService = Services.get().get(JPAService.class);
+            job =  jpaService.execute(new CoordJobGetJPAExecutor(job.getId()));
+            assertTrue(job.isDoneMaterialization());
+            assertEquals(6, job.getLastActionNumber());
+            assertEquals(DateUtils.parseDateOozieTZ("2013-07-18T01:00Z"), job.getNextMaterializedTime());
+        }
+        catch (JPAExecutorException se) {
+            se.printStackTrace();
+            fail("Job ID " + job.getId() + " was not stored properly in db");
+        }
+    }
     public void testActionMaterWithDST1() throws Exception {
         Date startTime = DateUtils.parseDateOozieTZ("2013-03-10T08:00Z");
         Date endTime = DateUtils.parseDateOozieTZ("2013-03-10T12:00Z");
