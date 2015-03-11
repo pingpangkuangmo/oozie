@@ -1069,8 +1069,13 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
-        assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        if (conf.get("mapred.child.java.opts").contains("-Xmx200m")) {
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        } else {
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        }
 
         actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
                 + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
@@ -1094,8 +1099,13 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
-        assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        if (conf.get("mapred.child.java.opts").contains("-Xmx200m")) {
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        } else {
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        }
 
         actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
                 + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
@@ -1148,8 +1158,13 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
-        assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        if (conf.get("mapred.child.java.opts").contains("-Xmx200m")) {
+            assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        } else {
+            assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
+        }
 
         actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
                 + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
@@ -1937,10 +1952,17 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         // heap size (2048 + 512)
         int heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
-        assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2", launcherConf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2", launcherConf.get("mapreduce.map.java.opts"));
-        assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Xmx2560m",
-                launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        if (launcherConf.get("mapred.child.java.opts").contains("-Xmx200m")) {
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2", launcherConf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2", launcherConf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Xmx2560m",
+                    launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        } else {
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2", launcherConf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2", launcherConf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Xmx2560m",
+                    launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        }
         assertEquals(2560, heapSize);
 
         Element actionXml2 = XmlUtils
@@ -1963,10 +1985,17 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         // heap size (2048 + 512)
         heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
-        assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1", launcherConf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1", launcherConf.get("mapreduce.map.java.opts"));
-        assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Xmx2560m",
-                launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        if (launcherConf.get("mapred.child.java.opts").contains("-Xmx200m")) {
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1", launcherConf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1", launcherConf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Xmx2560m",
+                    launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        } else {
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1", launcherConf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1", launcherConf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx1536m -Xmx2048m -Dkey1=val1 -Xmx2560m",
+                    launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        }
         assertEquals(2560, heapSize);
 
         Element actionXml3 = XmlUtils
@@ -1989,10 +2018,17 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         // heap size (2048 + 512)
         heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
-        assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1", launcherConf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1", launcherConf.get("mapreduce.map.java.opts"));
-        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1 -Xmx2560m",
-                launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        if (launcherConf.get("mapred.child.java.opts").contains("-Xmx200m")) {
+            assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1", launcherConf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1", launcherConf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1 -Xmx2560m",
+                    launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        } else {
+            assertEquals("-Xmx3072m -Xmx1024m -Dkey1=val1", launcherConf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx3072m -Xmx1024m -Dkey1=val1", launcherConf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Xmx3072m -Xmx1024m -Dkey1=val1 -Xmx2560m",
+                    launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
+        }
         assertEquals(2560, heapSize);
     }
 
