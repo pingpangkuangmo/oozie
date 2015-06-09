@@ -1070,11 +1070,11 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
         if (conf.get("mapred.child.java.opts").contains("-Xmx200m")) {
-            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
         } else {
-            assertEquals("JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-            assertEquals("JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
         }
 
         actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
@@ -1100,11 +1100,11 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
         if (conf.get("mapred.child.java.opts").contains("-Xmx200m")) {
-            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
         } else {
-            assertEquals("JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-            assertEquals("JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
         }
 
         actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
@@ -1131,8 +1131,8 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
-        assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-        assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+        assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+        assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
 
         actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
                 + getNameNodeUri() + "</name-node>" + "<job-xml>job.xml</job-xml>" + "<job-xml>job2.xml</job-xml>"
@@ -1159,11 +1159,11 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
         if (conf.get("mapred.child.java.opts").contains("-Xmx200m")) {
-            assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
         } else {
-            assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-            assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+            assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+            assertEquals("JAVA-OPT3 JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
         }
 
         actionXml = "<java>" + "<job-tracker>" + getJobTrackerUri() + "</job-tracker>" + "<name-node>"
@@ -1191,8 +1191,8 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
-        assertEquals("JAVA-OPT3 JAVA-OPT4 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapred.child.java.opts"));
-        assertEquals("JAVA-OPT3 JAVA-OPT4 JAVA-OPT1 JAVA-OPT2 -Djava.io.tmpdir=./tmp", conf.get("mapreduce.map.java.opts"));
+        assertEquals("JAVA-OPT3 JAVA-OPT4 JAVA-OPT1 JAVA-OPT2", conf.get("mapred.child.java.opts"));
+        assertEquals("JAVA-OPT3 JAVA-OPT4 JAVA-OPT1 JAVA-OPT2", conf.get("mapreduce.map.java.opts"));
     }
 
     public void testActionLibsPath() throws Exception {
@@ -1763,9 +1763,9 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         Configuration actionConf = ae.createBaseHadoopConf(context, actionXmlconf);
         Configuration conf = ae.createLauncherConf(getFileSystem(), context, action, actionXmlconf, actionConf);
 
-        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Djava.io.tmpdir=./tmp",
+        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true",
                 conf.get(JavaActionExecutor.HADOOP_CHILD_JAVA_OPTS));
-        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Djava.io.tmpdir=./tmp",
+        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true",
                 conf.get(JavaActionExecutor.HADOOP_MAP_JAVA_OPTS));
         assertEquals("-Xmx2560m -XX:NewRatio=8 -Djava.io.tmpdir=./usr", conf.get(JavaActionExecutor.HADOOP_REDUCE_JAVA_OPTS));
         assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Djava.io.tmpdir=./usr -Xmx2048m " +
@@ -1793,10 +1793,10 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         ae2.setupActionConf(jobConf, context2, eActionXml, appPath2);
 
         if (jobConf.get(JavaActionExecutor.HADOOP_CHILD_JAVA_OPTS) != null) {
-            assertEquals("-Xmx200m -Djava.io.tmpdir=./tmp", jobConf.get(JavaActionExecutor.HADOOP_CHILD_JAVA_OPTS));
+            assertEquals("-Xmx200m", jobConf.get(JavaActionExecutor.HADOOP_CHILD_JAVA_OPTS));
         }
         assertEquals("-Xmx1024m -Djava.io.tmpdir=./usr", jobConf.get(JavaActionExecutor.HADOOP_MAP_JAVA_OPTS));
-        assertEquals("-Xmx2560m -XX:NewRatio=8 -Djava.io.tmpdir=./tmp", jobConf.get(JavaActionExecutor.HADOOP_REDUCE_JAVA_OPTS));
+        assertEquals("-Xmx2560m -XX:NewRatio=8", jobConf.get(JavaActionExecutor.HADOOP_REDUCE_JAVA_OPTS));
         assertNull(jobConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
     }
     public void testUpdateConfForUberMode() throws Exception {
@@ -1829,9 +1829,9 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         assertEquals("2560", launcherConf.get(JavaActionExecutor.YARN_AM_RESOURCE_MB));
         // heap size in child.opts (2048 + 512)
         int heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
-        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Djava.io.tmpdir=./tmp",
+        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true",
                 launcherConf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Djava.io.tmpdir=./tmp",
+        assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true",
                 launcherConf.get("mapreduce.map.java.opts"));
         // There's an extra parameter (-Xmx1024m) in here when using YARN that's not here when using MR1
         if (createJobConf().get("yarn.resourcemanager.address") != null) {
@@ -1874,8 +1874,8 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         // heap size (2560 + 512)
         heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
-        assertEquals("-Xmx1536m -Xmx2560m -XX:NewRatio=8 -Djava.io.tmpdir=./tmp", launcherConf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx1536m -Xmx2560m -XX:NewRatio=8 -Djava.io.tmpdir=./tmp", launcherConf.get("mapreduce.map.java.opts"));
+        assertEquals("-Xmx1536m -Xmx2560m -XX:NewRatio=8", launcherConf.get("mapred.child.java.opts"));
+        assertEquals("-Xmx1536m -Xmx2560m -XX:NewRatio=8", launcherConf.get("mapreduce.map.java.opts"));
         assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx1536m -Xmx2560m -XX:NewRatio=8 " +
                         "-Xmx3072m -Djava.io.tmpdir=./tmp", launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
         assertEquals(3072, heapSize);
@@ -1912,8 +1912,8 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         // heap size (limit to 3584)
         heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
-        assertEquals("-Xmx1536m -Xmx4000m -XX:NewRatio=8 -Djava.io.tmpdir=./tmp", launcherConf.get("mapred.child.java.opts"));
-        assertEquals("-Xmx1536m -Xmx4000m -XX:NewRatio=8 -Djava.io.tmpdir=./tmp", launcherConf.get("mapreduce.map.java.opts"));
+        assertEquals("-Xmx1536m -Xmx4000m -XX:NewRatio=8", launcherConf.get("mapred.child.java.opts"));
+        assertEquals("-Xmx1536m -Xmx4000m -XX:NewRatio=8", launcherConf.get("mapreduce.map.java.opts"));
         assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx1536m -Xmx4000m -XX:NewRatio=8 " +
                         "-Xmx3584m -Djava.io.tmpdir=./tmp", launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
         assertEquals(3584, heapSize);
@@ -2021,16 +2021,16 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         // heap size (2048 + 512)
         int heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
         if (launcherConf.get("mapred.child.java.opts").contains("-Xmx200m")) {
-            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2",
                     launcherConf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2",
                     launcherConf.get("mapreduce.map.java.opts"));
             assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Xmx2560m " +
                             "-Djava.io.tmpdir=./tmp", launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
         } else {
-            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2",
                     launcherConf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2",
                     launcherConf.get("mapreduce.map.java.opts"));
             assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx1536m -Xmx2048m -Dkey1=val1 -Dkey2=val2 -Xmx2560m " +
                             "-Djava.io.tmpdir=./tmp", launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
@@ -2058,16 +2058,16 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         // heap size (2048 + 512)
         heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
         if (launcherConf.get("mapred.child.java.opts").contains("-Xmx200m")) {
-            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1",
                     launcherConf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1",
                     launcherConf.get("mapreduce.map.java.opts"));
             assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx1536m -Xmx2048m -Dkey1=val1 -Xmx2560m " +
                             "-Djava.io.tmpdir=./tmp", launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
         } else {
-            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1",
                     launcherConf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx1536m -Xmx2048m -Dkey1=val1",
                     launcherConf.get("mapreduce.map.java.opts"));
             assertEquals("-Xmx1024m -Djava.net.preferIPv4Stack=true -Xmx1536m -Xmx2048m -Dkey1=val1 -Xmx2560m " +
                             "-Djava.io.tmpdir=./tmp", launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
@@ -2095,15 +2095,17 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         // heap size (2048 + 512)
         heapSize = ae.extractHeapSizeMB(launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
         if (launcherConf.get("mapred.child.java.opts").contains("-Xmx200m")) {
-            assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1 -Djava.io.tmpdir=./tmp", launcherConf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1 -Djava.io.tmpdir=./tmp", launcherConf.get("mapreduce.map.java.opts"));
+            assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1",
+                    launcherConf.get("mapred.child.java.opts"));
+            assertEquals("-Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1",
+                    launcherConf.get("mapreduce.map.java.opts"));
             assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Xmx200m -Xmx3072m -Xmx1024m -Dkey1=val1 -Xmx2560m " +
                             "-Djava.io.tmpdir=./tmp",
                     launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
         } else {
-            assertEquals("-Xmx3072m -Xmx1024m -Dkey1=val1 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx3072m -Xmx1024m -Dkey1=val1",
                     launcherConf.get("mapred.child.java.opts"));
-            assertEquals("-Xmx3072m -Xmx1024m -Dkey1=val1 -Djava.io.tmpdir=./tmp",
+            assertEquals("-Xmx3072m -Xmx1024m -Dkey1=val1",
                     launcherConf.get("mapreduce.map.java.opts"));
             assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true -Xmx3072m -Xmx1024m -Dkey1=val1 -Xmx2560m " +
                             "-Djava.io.tmpdir=./tmp", launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
