@@ -49,6 +49,8 @@ import org.apache.oozie.action.ActionExecutorException;
 import org.apache.oozie.client.OozieClient;
 import org.apache.oozie.client.WorkflowAction;
 import org.apache.oozie.client.WorkflowJob;
+import org.apache.oozie.hadoop.utils.HadoopShims;
+import org.apache.oozie.service.ConfigurationService;
 import org.apache.oozie.service.HadoopAccessorService;
 import org.apache.oozie.service.LiteWorkflowStoreService;
 import org.apache.oozie.service.Services;
@@ -1797,7 +1799,12 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         }
         assertEquals("-Xmx1024m -Djava.io.tmpdir=./usr", jobConf.get(JavaActionExecutor.HADOOP_MAP_JAVA_OPTS));
         assertEquals("-Xmx2560m -XX:NewRatio=8", jobConf.get(JavaActionExecutor.HADOOP_REDUCE_JAVA_OPTS));
-        assertNull(jobConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
+        // There's an extra parameter (-Xmx1024m) in here when using YARN that's not here when using MR1
+        if (HadoopShims.isYARN()) {
+            assertEquals("-Xmx1024m -Djava.io.tmpdir=./tmp", jobConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
+        } else {
+            assertNull(jobConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS));
+        }
     }
     public void testUpdateConfForUberMode() throws Exception {
         Element actionXml1 = XmlUtils
@@ -1834,8 +1841,8 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         assertEquals("-Xmx2048m -Djava.net.preferIPv4Stack=true",
                 launcherConf.get("mapreduce.map.java.opts"));
         // There's an extra parameter (-Xmx1024m) in here when using YARN that's not here when using MR1
-        if (createJobConf().get("yarn.resourcemanager.address") != null) {
-            assertEquals("-Xmx1024m -Xmx2048m -Djava.net.preferIPv4Stack=true -Xmx2560m",
+        if (HadoopShims.isYARN()) {
+            assertEquals("-Xmx1024m -Xmx2048m -Djava.net.preferIPv4Stack=true -Xmx2560m -Djava.io.tmpdir=./tmp",
                     launcherConf.get(JavaActionExecutor.YARN_AM_COMMAND_OPTS).trim());
         }
         else {
@@ -2157,7 +2164,7 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
 
         // uber mode should be disabled since oozie.launcher.mapreduce.job.classloader=true
         assertEquals("false", launcherConf.get(JavaActionExecutor.HADOOP_YARN_UBER_MODE));
-}
+    }
 
     public void testAddToCache() throws Exception {
         JavaActionExecutor ae = new JavaActionExecutor();
@@ -2204,9 +2211,9 @@ public class TestJavaActionExecutor extends ActionExecutorTestCase {
         conf.set(WorkflowAppService.HADOOP_USER, getTestUser());
         ae.addToCache(conf, appPath, appJarFullPath.toString(), false);
         // assert that mapred.cache.files contains jar URI path (full on Hadoop-2)
-        Path jarPath = createJobConf().get("yarn.resourcemanager.address") == null ?
-                new Path(appJarFullPath.toUri().getPath()) :
-                new Path(appJarFullPath.toUri());
+        Path jarPath = HadoopShims.isYARN() ?
+                new Path(appJarFullPath.toUri()):
+                new Path(appJarFullPath.toUri().getPath());
         assertTrue(conf.get("mapred.cache.files").contains(jarPath.toString()));
         // assert that dist cache classpath contains jar URI path
         Path[] paths = DistributedCache.getFileClassPaths(conf);
