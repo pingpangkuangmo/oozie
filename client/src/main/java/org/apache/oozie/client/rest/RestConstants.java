@@ -184,4 +184,11 @@ public interface RestConstants {
     public static final String LOG_FILTER_OPTION = "logfilter";
 
     public static final String JOB_COORD_RERUN_FAILED_PARAM = "failed";
+
+    public static final String VALIDATE = "validate";
+
+    public static final String FILE_PARAM = "file";
+
+    public static final String USER_PARAM = "user";
+
 }

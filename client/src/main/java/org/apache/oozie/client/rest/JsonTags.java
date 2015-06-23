@@ -238,4 +238,7 @@ public interface JsonTags {
     public static final String COORD_UPDATE_DIFF = "diff";
 
     public static final String STATUS = "status";
+
+    public static final String VALIDATE = "validate";
+
 }
