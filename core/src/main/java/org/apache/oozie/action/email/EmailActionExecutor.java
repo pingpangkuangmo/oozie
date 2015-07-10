@@ -38,6 +38,7 @@ import org.apache.oozie.action.ActionExecutor;
 import org.apache.oozie.action.ActionExecutorException;
 import org.apache.oozie.action.ActionExecutorException.ErrorType;
 import org.apache.oozie.client.WorkflowAction;
+import org.apache.oozie.service.ConfigurationService;
 import org.apache.oozie.util.XmlUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -135,7 +136,7 @@ public class EmailActionExecutor extends ActionExecutor {
         String smtpPort = getOozieConf().get(EMAIL_SMTP_PORT, "25");
         Boolean smtpAuth = getOozieConf().getBoolean(EMAIL_SMTP_AUTH, false);
         String smtpUser = getOozieConf().get(EMAIL_SMTP_USER, "");
-        String smtpPassword = getOozieConf().get(EMAIL_SMTP_PASS, "");
+        String smtpPassword = ConfigurationService.getPassword(EMAIL_SMTP_PASS);
         String fromAddr = getOozieConf().get(EMAIL_SMTP_FROM, "oozie@localhost");
 
         Properties properties = new Properties();
