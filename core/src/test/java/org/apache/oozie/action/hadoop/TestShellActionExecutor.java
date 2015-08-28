@@ -91,7 +91,7 @@ public class TestShellActionExecutor extends ActionExecutorTestCase {
         assertEquals("2", conf.get("oozie.shell.args.size"));
         assertEquals("a=A", conf.get("oozie.shell.args.0"));
         assertEquals("b=B", conf.get("oozie.shell.args.1"));
-        assertEquals("false", conf.get("oozie.action.shell.setup.hadoop.conf.dir"));
+        assertEquals("true", conf.get("oozie.action.shell.setup.hadoop.conf.dir"));
     }
 
     /**
