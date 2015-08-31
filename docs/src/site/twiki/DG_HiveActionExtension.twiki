@@ -150,7 +150,7 @@ to navigate to the Oozie Launcher map-reduce job task logs via the Hadoop job-tr
 The logging level of the Hive action can set in the Hive action configuration using the
 property =oozie.hive.log.level=. The default value is =INFO=.
 
-+---+++ Hive Server 2 (DEPRECATED)
+---+++ Hive Server 2 (DEPRECATED)
 
 Using the Hive action with Hive Server 2 is DEPRECATED.  Users are encouraged to switch to
 the [[DG_Hive2ActionExtension][Hive 2 action]] instead.
