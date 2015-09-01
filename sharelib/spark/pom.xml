@@ -343,7 +343,15 @@
 
     <profiles>
         <profile>
+            <!-- In CDH, we build MR2 by default, so we want the opposite here.  <activateByDefault> will be deactivated if there's
+            an 'mr1' profile here, even if it does nothing, when 'mr1' is specified; otherwise, it will be activated -->
+            <id>mr1</id>
+        </profile>
+        <profile>
             <id>hadoop-2</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.spark</groupId>
