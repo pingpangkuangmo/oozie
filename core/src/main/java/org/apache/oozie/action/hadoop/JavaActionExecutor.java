@@ -120,6 +120,7 @@ public class JavaActionExecutor extends ActionExecutor {
     public static final String CONF_HADOOP_YARN_UBER_MODE = "oozie.action.launcher." + HADOOP_YARN_UBER_MODE;
     public static final String HADOOP_JOB_CLASSLOADER = "mapreduce.job.classloader";
     public static final String HADOOP_USER_CLASSPATH_FIRST = "mapreduce.user.classpath.first";
+    public static final String OOZIE_CREDENTIALS_SKIP = "oozie.credentials.skip";
 
     static {
         DISALLOWED_PROPERTIES.add(HADOOP_USER);
@@ -956,18 +957,21 @@ public class JavaActionExecutor extends ActionExecutor {
             }
 
             // Setting the credential properties in launcher conf
+            JobConf credentialsConf = null;
             HashMap<String, CredentialsProperties> credentialsProperties = setCredentialPropertyToActionConf(context,
                     action, actionConf);
+            if (credentialsProperties != null) {
 
-            // Adding if action need to set more credential tokens
-            JobConf credentialsConf = new JobConf(false);
-            XConfiguration.copy(actionConf, credentialsConf);
-            setCredentialTokens(credentialsConf, context, action, credentialsProperties);
+                // Adding if action need to set more credential tokens
+                credentialsConf = new JobConf(false);
+                XConfiguration.copy(actionConf, credentialsConf);
+                setCredentialTokens(credentialsConf, context, action, credentialsProperties);
 
-            // insert conf to action conf from credentialsConf
-            for (Entry<String, String> entry : credentialsConf) {
-                if (actionConf.get(entry.getKey()) == null) {
-                    actionConf.set(entry.getKey(), entry.getValue());
+                // insert conf to action conf from credentialsConf
+                for (Entry<String, String> entry : credentialsConf) {
+                    if (actionConf.get(entry.getKey()) == null) {
+                        actionConf.set(entry.getKey(), entry.getValue());
+                    }
                 }
             }
 
@@ -1002,7 +1006,7 @@ public class JavaActionExecutor extends ActionExecutor {
                 launcherJobConf.getCredentials().addToken(HadoopAccessorService.MR_TOKEN_ALIAS, mrdt);
 
                 // insert credentials tokens to launcher job conf if needed
-                if (needInjectCredentials()) {
+                if (needInjectCredentials() && credentialsConf != null) {
                     for (Token<? extends TokenIdentifier> tk : credentialsConf.getCredentials().getAllTokens()) {
                         Text fauxAlias = new Text(tk.getKind() + "_" + tk.getService());
                         LOG.debug("ADDING TOKEN: " + fauxAlias);
@@ -1067,24 +1071,39 @@ public class JavaActionExecutor extends ActionExecutor {
             WorkflowAction action, Configuration actionConf) throws Exception {
         HashMap<String, CredentialsProperties> credPropertiesMap = null;
         if (context != null && action != null) {
-            credPropertiesMap = getActionCredentialsProperties(context, action);
-            if (credPropertiesMap != null) {
-                for (String key : credPropertiesMap.keySet()) {
-                    CredentialsProperties prop = credPropertiesMap.get(key);
-                    if (prop != null) {
-                        LOG.debug("Credential Properties set for action : " + action.getId());
-                        for (String property : prop.getProperties().keySet()) {
-                            actionConf.set(property, prop.getProperties().get(property));
-                            LOG.debug("property : '" + property + "', value : '" + prop.getProperties().get(property) + "'");
-                        }
-                    }
+            if (!"true".equals(actionConf.get(OOZIE_CREDENTIALS_SKIP))) {
+                XConfiguration wfJobConf = null;
+                try {
+                    wfJobConf = new XConfiguration(new StringReader(context.getWorkflow().getConf()));
+                } catch (IOException ioe) {
+                    throw new ActionExecutorException(ActionExecutorException.ErrorType.FAILED, "It should never happen",
+                            ioe.getMessage());
                 }
+                if ("false".equals(actionConf.get(OOZIE_CREDENTIALS_SKIP)) ||
+                    !wfJobConf.getBoolean(OOZIE_CREDENTIALS_SKIP, ConfigurationService.getBoolean(OOZIE_CREDENTIALS_SKIP))) {
+                    credPropertiesMap = getActionCredentialsProperties(context, action);
+                    if (credPropertiesMap != null) {
+                        for (String key : credPropertiesMap.keySet()) {
+                            CredentialsProperties prop = credPropertiesMap.get(key);
+                            if (prop != null) {
+                                LOG.debug("Credential Properties set for action : " + action.getId());
+                                for (String property : prop.getProperties().keySet()) {
+                                    actionConf.set(property, prop.getProperties().get(property));
+                                    LOG.debug("property : '" + property + "', value : '" + prop.getProperties().get(property)
+                                            + "'");
+                                }
+                            }
+                        }
+                    } else {
+                        LOG.warn("No credential properties found for action : " + action.getId() + ", cred : " + action.getCred());
+                    }
+                } else {
+                    LOG.info("Skipping credentials (" + OOZIE_CREDENTIALS_SKIP + "=true)");
+                }
+            } else {
+                LOG.info("Skipping credentials (" + OOZIE_CREDENTIALS_SKIP + "=true)");
             }
-            else {
-                LOG.warn("No credential properties found for action : " + action.getId() + ", cred : " + action.getCred());
-            }
-        }
-        else {
+        } else {
             LOG.warn("context or action is null");
         }
         return credPropertiesMap;
