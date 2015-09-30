@@ -104,6 +104,11 @@ public class TestSparkActionExecutor extends ActionExecutorTestCase {
 
     @SuppressWarnings("unchecked")
     private void _testSetupMethods(String master, Map<String, String> extraSparkOpts, String mode) throws Exception {
+        // CLOUDERA-BUILD: Tell Spark not to localize Hadoop Configs to fix regression on kerberized cluster (CDH-32176)
+        if (master.startsWith("yarn")) {
+            extraSparkOpts.put("spark.yarn.localizeConfig", "false");
+        }
+
         SparkActionExecutor ae = new SparkActionExecutor();
         assertEquals(Arrays.asList(SparkMain.class), ae.getLauncherClasses());
 
