@@ -93,6 +93,7 @@
          <pig.version>${cdh.pig.version}</pig.version>
          <sqoop.version>${cdh.sqoop.version}</sqoop.version>
          <spark.version>${cdh.spark.version}</spark.version>
+         <spark-avro.version>${cdh.spark-avro.version}</spark-avro.version>
          <spark.guava.version>14.0.1</spark.guava.version>
          <streaming.version>${cdh.hadoop.version}</streaming.version>
          <distcp.version>${hadooplib.version}</distcp.version>
