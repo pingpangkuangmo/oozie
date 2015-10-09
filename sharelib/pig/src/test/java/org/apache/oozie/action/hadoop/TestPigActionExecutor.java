@@ -76,6 +76,7 @@ public class TestPigActionExecutor extends ActionExecutorTestCase {
     protected void setUp() throws Exception {
         System.setProperty("oozie.test.metastore.server", "false");
         super.setUp();
+        PigTestCase.resetPigStats();
     }
 
     @Override
