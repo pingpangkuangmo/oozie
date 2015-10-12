@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>4.1.0-cdh5.5.0-SNAPSHOT</version>
+        <version>4.1.0-cdh5.5.0</version>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-hbaselibs</artifactId>
