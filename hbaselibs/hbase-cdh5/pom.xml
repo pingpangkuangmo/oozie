@@ -22,12 +22,12 @@
     <parent>
         <groupId>org.apache.oozie</groupId>
         <artifactId>oozie-main</artifactId>
-        <version>4.1.0-cdh5.4.8-SNAPSHOT</version>
+        <version>4.1.0-cdh5.4.9-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>org.apache.oozie</groupId>
     <artifactId>oozie-hbase</artifactId>
-    <version>1.0.0-cdh5.4.8-SNAPSHOT.oozie-4.1.0-cdh5.4.8-SNAPSHOT</version>
+    <version>1.0.0-cdh5.4.9-SNAPSHOT.oozie-4.1.0-cdh5.4.9-SNAPSHOT</version>
     <description>Apache Oozie Hbase ${project.version}</description>
     <name>Apache Oozie Hbase ${project.version}</name>
     <packaging>jar</packaging>
