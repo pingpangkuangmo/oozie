@@ -801,18 +801,36 @@
                 <groupId>net.sf.jung</groupId>
                 <artifactId>jung-graph-impl</artifactId>
                 <version>2.0.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.sourceforge.collections</groupId>
+                        <artifactId>collections-generic</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
                 <groupId>net.sf.jung</groupId>
                 <artifactId>jung-api</artifactId>
                 <version>2.0.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.sourceforge.collections</groupId>
+                        <artifactId>collections-generic</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
                 <groupId>net.sf.jung</groupId>
                 <artifactId>jung-visualization</artifactId>
                 <version>2.0.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.sourceforge.collections</groupId>
+                        <artifactId>collections-generic</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -825,13 +843,17 @@
                         <groupId>colt</groupId>
                         <artifactId>colt</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>net.sourceforge.collections</groupId>
+                        <artifactId>collections-generic</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
 
             <dependency>
-                <groupId>net.sourceforge.collections</groupId>
+                <groupId>com.cloudera</groupId>
                 <artifactId>collections-generic</artifactId>
-                <version>4.01</version>
+                <version>4.01-cloudera</version>
             </dependency>
 
             <dependency>
