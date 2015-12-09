@@ -372,7 +372,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>net.sourceforge.collections</groupId>
+            <groupId>com.cloudera</groupId>
             <artifactId>collections-generic</artifactId>
             <scope>compile</scope>
         </dependency>
