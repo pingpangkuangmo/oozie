@@ -471,13 +471,21 @@ function jobDetailsPopup(response, request) {
             name: 'group',
             width: 400,
             value: jobDetails["group"]
-        }, {
+        }, new Ext.form.TriggerField({
             fieldLabel: 'Parent Coord',
             editable: false,
             name: 'parentId',
             width: 400,
-            value: jobDetails["parentId"]
-        }, {
+            value: jobDetails["parentId"],
+            triggerClass: 'x-form-search-trigger',
+            onTriggerClick: function() {
+                if (jobDetails["parentId"]) {
+                    var jobId = jobDetails["parentId"];
+                    jobId = jobId.substring(0, jobId.indexOf("-C@") + 2)
+                    window.open(oozie_host + "?job=" + jobId);
+                }
+            }
+        }), {
             fieldLabel: 'Create Time',
             editable: false,
             name: 'createdTime',
@@ -1046,13 +1054,19 @@ function coordJobDetailsPopup(response, request) {
             name: 'timeUnit',
             width: 400,
             value: jobDetails["timeUnit"]
-        }, {
+        }, new Ext.form.TriggerField({
             fieldLabel: 'Parent Bundle',
             editable: false,
             name: 'bundleId',
             width: 400,
-            value: jobDetails["bundleId"]
-        }, {
+            value: jobDetails["bundleId"],
+            triggerClass: 'x-form-search-trigger',
+            onTriggerClick : function() {
+                if (jobDetails["bundleId"]) {
+                    window.open(oozie_host + "?job=" + jobDetails["bundleId"]);
+                }
+            }
+        }), {
             fieldLabel: 'Start Time',
             editable: false,
             name: 'startTime',
@@ -1392,7 +1406,7 @@ function coordJobDetailsPopup(response, request) {
                 autoScroll: true,
                 value: jobDetails["conf"]
             })
-	},{
+    },{
            title: 'Coord Job Log',
            items: jobLogArea,
            id: 'coord_job_log',
