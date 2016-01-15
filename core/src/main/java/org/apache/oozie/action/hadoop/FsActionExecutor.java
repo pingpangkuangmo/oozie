@@ -49,10 +49,12 @@ import org.jdom.Element;
  */
 public class FsActionExecutor extends ActionExecutor {
 
+    public static final String ACTION_TYPE = "fs";
+
     private final int maxGlobCount;
 
     public FsActionExecutor() {
-        super("fs");
+        super(ACTION_TYPE);
         maxGlobCount = ConfigurationService.getInt(LauncherMapper.CONF_OOZIE_ACTION_FS_GLOB_MAX);
     }
 
@@ -606,4 +608,7 @@ public class FsActionExecutor extends ActionExecutor {
         }
     }
 
+    public boolean supportsConfigurationJobXML() {
+        return true;
+    }
 }
