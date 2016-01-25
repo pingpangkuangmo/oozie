@@ -880,6 +880,17 @@
                 <version>2.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.kitesdk</groupId>
+                <artifactId>kite-data-mapreduce</artifactId>
+                <version>${cdh.kite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.kitesdk</groupId>
+                <artifactId>kite-data-hive</artifactId>
+                <version>${cdh.kite.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
