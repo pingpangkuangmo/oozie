@@ -891,6 +891,12 @@
                 <version>${cdh.kite.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-mapred</artifactId>
+                <version>${cdh.avro.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
