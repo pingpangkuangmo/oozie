@@ -18,45 +18,6 @@
 
 package org.apache.oozie;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.oozie.client.CoordinatorAction;
-import org.apache.oozie.client.CoordinatorJob;
-import org.apache.oozie.client.OozieClient;
-import org.apache.oozie.client.WorkflowJob;
-import org.apache.oozie.client.rest.RestConstants;
-import org.apache.oozie.command.CommandException;
-import org.apache.oozie.command.coord.BulkCoordXCommand;
-import org.apache.oozie.command.coord.CoordActionInfoXCommand;
-import org.apache.oozie.command.coord.CoordActionsIgnoreXCommand;
-import org.apache.oozie.command.coord.CoordActionsKillXCommand;
-import org.apache.oozie.command.coord.CoordChangeXCommand;
-import org.apache.oozie.command.coord.CoordJobXCommand;
-import org.apache.oozie.command.coord.CoordJobsXCommand;
-import org.apache.oozie.command.coord.CoordKillXCommand;
-import org.apache.oozie.command.coord.CoordRerunXCommand;
-import org.apache.oozie.command.coord.CoordResumeXCommand;
-import org.apache.oozie.command.coord.CoordSubmitXCommand;
-import org.apache.oozie.command.coord.CoordSuspendXCommand;
-import org.apache.oozie.command.coord.CoordUpdateXCommand;
-import org.apache.oozie.command.OperationType;
-import org.apache.oozie.executor.jpa.CoordActionQueryExecutor;
-import org.apache.oozie.executor.jpa.CoordJobQueryExecutor;
-import org.apache.oozie.executor.jpa.JPAExecutorException;
-import org.apache.oozie.executor.jpa.WorkflowJobQueryExecutor;
-import org.apache.oozie.executor.jpa.WorkflowJobQueryExecutor.WorkflowJobQuery;
-import org.apache.oozie.service.DagXLogInfoService;
-import org.apache.oozie.service.Services;
-import org.apache.oozie.service.XLogStreamingService;
-import org.apache.oozie.util.CoordActionsInDateRange;
-import org.apache.oozie.util.DateUtils;
-import org.apache.oozie.util.Pair;
-import org.apache.oozie.util.ParamChecker;
-import org.apache.oozie.util.XLog;
-import org.apache.oozie.util.XLogFilter;
-import org.apache.oozie.util.XLogUserFilterParam;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.Timestamp;
@@ -73,6 +34,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.oozie.client.CoordinatorAction;
+import org.apache.oozie.client.CoordinatorJob;
+import org.apache.oozie.client.OozieClient;
+import org.apache.oozie.client.WorkflowJob;
+import org.apache.oozie.client.rest.RestConstants;
+import org.apache.oozie.command.CommandException;
+import org.apache.oozie.command.OperationType;
+import org.apache.oozie.command.coord.BulkCoordXCommand;
+import org.apache.oozie.command.coord.CoordActionInfoXCommand;
+import org.apache.oozie.command.coord.CoordActionsIgnoreXCommand;
+import org.apache.oozie.command.coord.CoordActionsKillXCommand;
+import org.apache.oozie.command.coord.CoordChangeXCommand;
+import org.apache.oozie.command.coord.CoordJobXCommand;
+import org.apache.oozie.command.coord.CoordJobsXCommand;
+import org.apache.oozie.command.coord.CoordKillXCommand;
+import org.apache.oozie.command.coord.CoordRerunXCommand;
+import org.apache.oozie.command.coord.CoordResumeXCommand;
+import org.apache.oozie.command.coord.CoordSubmitXCommand;
+import org.apache.oozie.command.coord.CoordSuspendXCommand;
+import org.apache.oozie.command.coord.CoordUpdateXCommand;
+import org.apache.oozie.executor.jpa.CoordActionQueryExecutor;
+import org.apache.oozie.executor.jpa.CoordJobQueryExecutor;
+import org.apache.oozie.executor.jpa.JPAExecutorException;
+import org.apache.oozie.executor.jpa.WorkflowJobQueryExecutor;
+import org.apache.oozie.executor.jpa.WorkflowJobQueryExecutor.WorkflowJobQuery;
+import org.apache.oozie.service.DagXLogInfoService;
+import org.apache.oozie.service.Services;
+import org.apache.oozie.service.XLogStreamingService;
+import org.apache.oozie.util.CoordActionsInDateRange;
+import org.apache.oozie.util.DateUtils;
+import org.apache.oozie.util.Pair;
+import org.apache.oozie.util.ParamChecker;
+import org.apache.oozie.util.XLog;
+import org.apache.oozie.util.XLogFilter;
+import org.apache.oozie.util.XLogUserFilterParam;
+
+import com.google.common.annotations.VisibleForTesting;
 
 public class CoordinatorEngine extends BaseEngine {
     private static final XLog LOG = XLog.getLog(CoordinatorEngine.class);
@@ -690,7 +691,7 @@ public class CoordinatorEngine extends BaseEngine {
                     String[] pair = token.split("=");
                     if (pair.length != 2) {
                         throw new CoordinatorEngineException(ErrorCode.E0420, filter,
-                                "elements must be name=value pairs");
+                                "elements must be semicolon-separated name=value pairs");
                     }
                     if (!FILTER_NAMES.contains(pair[0].toLowerCase())) {
                         throw new CoordinatorEngineException(ErrorCode.E0420, filter, XLog.format("invalid name [{0}]",
@@ -734,7 +735,8 @@ public class CoordinatorEngine extends BaseEngine {
                     }
                     list.add(pair[1]);
                 } else {
-                    throw new CoordinatorEngineException(ErrorCode.E0420, filter, "elements must be name=value pairs");
+                    throw new CoordinatorEngineException(ErrorCode.E0420, filter,
+                            "elements must be semicolon-separated name=value pairs");
                 }
             }
             // Unit is specified and frequency is not specified

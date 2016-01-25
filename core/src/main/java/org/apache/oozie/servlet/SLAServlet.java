@@ -142,7 +142,7 @@ public class SLAServlet extends JsonRestServlet {
                     String[] pair = token.split("=");
                     if (pair.length != 2) {
                         throw new XServletException(HttpServletResponse.SC_BAD_REQUEST, ErrorCode.E0401,
-                                "elements must be name=value pairs");
+                                "elements must be semicolon-separated name=value pairs");
                     }
                     if (!allowedFilters.contains(pair[0])) {
                         throw new XServletException(HttpServletResponse.SC_BAD_REQUEST, ErrorCode.E0401,
@@ -157,7 +157,7 @@ public class SLAServlet extends JsonRestServlet {
                 }
                 else {
                     throw new XServletException(HttpServletResponse.SC_BAD_REQUEST, ErrorCode.E0401,
-                            "elements must be name=value pairs");
+                            "elements must be semicolon-separated name=value pairs");
                 }
             }
         }
