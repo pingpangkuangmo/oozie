@@ -404,6 +404,7 @@
                 <directory>${basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
+        <pluginManagement>
         <plugins>
             <plugin>
                  <groupId>org.apache.rat</groupId>
@@ -503,6 +504,7 @@
                 </dependencies>
             </plugin>
         </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
